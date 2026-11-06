@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="bg-desk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg-desk)"/>
+  <rect x="170" y="90" width="260" height="150" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="4"/>
+  <rect x="190" y="112" width="140" height="10" rx="5" fill="#38bdf8" opacity="0.8"/>
+  <rect x="190" y="132" width="190" height="10" rx="5" fill="#f472b6" opacity="0.8"/>
+  <rect x="190" y="152" width="110" height="10" rx="5" fill="#fb923c" opacity="0.8"/>
+  <rect x="190" y="172" width="165" height="10" rx="5" fill="#a78bfa" opacity="0.8"/>
+  <rect x="275" y="240" width="50" height="25" fill="#64748b"/>
+  <rect x="230" y="265" width="140" height="10" rx="5" fill="#94a3b8"/>
+  <text x="300" y="325" font-family="sans-serif" font-size="24" font-weight="600" fill="#ffffff" text-anchor="middle">Minimal Dev Workspace</text>
+  <text x="300" y="355" font-family="sans-serif" font-size="16" fill="#93c5fd" text-anchor="middle">Clean Code · Flow State · Architecture</text>
+</svg>

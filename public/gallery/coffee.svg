@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="bg-coffee" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#78350f"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg-coffee)"/>
+  <rect x="230" y="140" width="120" height="100" rx="18" fill="#fcd34d" opacity="0.9"/>
+  <path d="M350 160 H375 A25 25 0 0 1 375 210 H350" fill="none" stroke="#fcd34d" stroke-width="12"/>
+  <rect x="205" y="248" width="170" height="14" rx="7" fill="#fde68a"/>
+  <path d="M265 120 Q255 95 270 75 M295 120 Q285 95 300 75 M325 120 Q315 95 330 75" fill="none" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
+  <text x="300" y="320" font-family="sans-serif" font-size="24" font-weight="600" fill="#ffffff" text-anchor="middle">Home Coffee Lab</text>
+  <text x="300" y="352" font-family="sans-serif" font-size="16" fill="#fde68a" text-anchor="middle">Specialty Espresso &amp; Pour-Over</text>
+</svg>
