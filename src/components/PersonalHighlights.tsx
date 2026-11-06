@@ -7,32 +7,33 @@ import {SectionSubtitle} from "@/components/common/Sections";
 const lifestyleItems = [
     {
         icon: <Puzzle className="w-6 h-6"/>,
-        title: "Board Game Designer",
-        desc: "From the passion of playing to designing a game myself — I created my own board game, still testing it with friends.",
-    }, {
+        title: "Board Game Designer & Host",
+        desc: "From organizing Tuesday GamePlan board-game nights in Dubai (@bgameplan) to designing and playtesting my own custom board game with friends.",
+    },
+    {
         icon: <Languages className="w-6 h-6"/>,
         title: "Language Explorer",
-        desc: "I love teaching Spanish and have dived into Japanese. Built an app prototype to help myself and others practice kana + vocabulary.",
+        desc: "I love teaching Spanish and diving into Japanese—and built interactive English/Spanish flashcard prototypes (LanguageCards) to practice vocabulary.",
     },
     {
         icon: <Plane className="w-6 h-6"/>,
         title: "Global Citizen & Traveler",
-        desc: "Colombia, Singapore, UAE have been home... and above 12 other countries have host me for amazing visits.",
+        desc: "Colombia, Singapore, and the UAE have been home, with 15+ other countries visited across Asia, Europe, and the Americas.",
     },
     {
         icon: <Music className="w-6 h-6"/>,
         title: "Music Mood Swings",
-        desc: "Lo-fi when coding, ambient for flow, and classical for decompressing. Music is my mind’s backdrop.",
+        desc: "Lo-fi when coding, ambient for deep architectural flow, and classical for decompressing. Music is my mind’s backdrop.",
     },
     {
         icon: <BookOpen className="w-6 h-6"/>,
         title: "Always Learning",
-        desc: "Outside of work, I dive into AI papers, parenting books, or philosophy — anything that sparks thought.",
+        desc: "Outside of work, I dive into AI/ML papers, Domain-Driven Design, parenting books, and philosophy—anything that sparks thought.",
     },
     {
         icon: <Film className="w-6 h-6"/>,
-        title: "Movies and Entertainment",
-        desc: "Have my own list of movies and stories I like",
+        title: "Movies & Storytelling",
+        desc: "Curating my personal notebook of mind-bending and inspiring cinema—favorites include Memento and 3 Idiots.",
     },
 ];
 

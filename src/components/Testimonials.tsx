@@ -5,17 +5,27 @@ import {AnimatePresence, motion} from "framer-motion";
 import clsx from "clsx";
 import {Linkedin} from "lucide-react";
 import {
+    SiApachekafka,
+    SiArgo,
     SiCplusplus,
     SiDocker,
     SiElasticsearch,
     SiGraphql,
     SiJenkins,
     SiKotlin,
+    SiKubernetes,
     SiMilvus,
+    SiMongodb,
+    SiNextdotjs,
+    SiPostgresql,
     SiPrometheus,
     SiPython,
+    SiPytorch,
+    SiQuarkus,
     SiReact,
+    SiScala,
     SiSpringboot,
+    SiTypescript,
     SiVuedotjs
 } from "react-icons/si";
 import {FaJava} from "react-icons/fa";
@@ -79,25 +89,35 @@ I recommend working with him as I believe he is a great team player.”`,
 
 const professionalHighlights = [
     {icon: SiPython, name: "Python"},
-    {icon: SiReact, name: "React"},
-    {icon: SiVuedotjs, name: "Vue.js"},
-    {icon: SiSpringboot, name: "Spring Boot"},
-    {icon: SiGraphql, name: "GraphQL"},
-    {icon: SiCplusplus, name: "C++"},
-    {icon: FaJava, name: "Java"},
     {icon: SiKotlin, name: "Kotlin"},
+    {icon: FaJava, name: "Java"},
+    {icon: SiSpringboot, name: "Spring Boot"},
+    {icon: SiQuarkus, name: "Quarkus"},
+    {icon: SiScala, name: "Scala"},
+    {icon: SiCplusplus, name: "C++"},
+    {icon: SiReact, name: "React"},
+    {icon: SiNextdotjs, name: "Next.js"},
+    {icon: SiTypescript, name: "TypeScript"},
+    {icon: SiVuedotjs, name: "Vue.js"},
     {icon: SiDocker, name: "Docker"},
+    {icon: SiKubernetes, name: "Kubernetes"},
+    {icon: SiArgo, name: "ArgoCD"},
     {icon: SiJenkins, name: "Jenkins"},
     {icon: SiPrometheus, name: "Prometheus"},
+    {icon: SiPytorch, name: "PyTorch"},
     {icon: SiMilvus, name: "Milvus"},
     {icon: SiElasticsearch, name: "Elasticsearch"},
+    {icon: SiApachekafka, name: "Kafka"},
+    {icon: SiGraphql, name: "GraphQL"},
+    {icon: SiMongodb, name: "MongoDB"},
+    {icon: SiPostgresql, name: "PostgreSQL"},
 ];
 
 const skillGroups = {
-    "Backend": ["Python", "Kotlin", "Spring Boot", "Java", "C++"],
-    "Frontend": ["React", "Vue.js"],
-    "DevOps & Observability": ["Docker", "Jenkins", "Prometheus"],
-    "AI/Data": ["Milvus", "Elasticsearch", "GraphQL"]
+    "Backend": ["Python", "Kotlin", "Spring Boot", "Java", "Quarkus", "Scala", "C++"],
+    "Frontend": ["React", "Next.js", "TypeScript", "Vue.js"],
+    "DevOps & Observability": ["Docker", "Kubernetes", "ArgoCD", "Jenkins", "Prometheus"],
+    "AI, Data & Messaging": ["PyTorch", "Milvus", "Elasticsearch", "Kafka", "GraphQL", "MongoDB", "PostgreSQL"]
 };
 
 function getIcon(name: string) {
@@ -208,7 +228,7 @@ export default function Testimonials() {
             {Object.entries(skillGroups).map(([category, techs]) => (
                 <div key={category} className="flex flex-row items-center mb-0">
                     <div key={category + "category"}
-                         className="text-orange-300 font-semibold text-base text-right uppercase tracking-wide w-[35%]">
+                         className="text-orange-300 font-semibold text-base text-right uppercase tracking-wide w-[35%] pr-4">
                         {category}
                     </div>
                     <div className="flex flex-wrap w-[65%]">
