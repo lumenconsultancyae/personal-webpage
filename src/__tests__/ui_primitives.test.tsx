@@ -7,7 +7,6 @@ import {
     ContextualEmptyState,
     RouteErrorBoundary,
 } from "@/components/ui/ErrorBoundary";
-import {CommandPalette} from "@/components/ui/CommandPalette";
 import {PaginationControls} from "@/components/ui/PaginationControls";
 
 function ToastHarness({onUndo}: { onUndo?: () => void }) {
@@ -178,56 +177,6 @@ describe("Accessible UI Primitives (Toast, ConfirmDialog, ErrorBoundary, Command
         );
         fireEvent.click(screen.getByTestId("empty-state-action-no-matches"));
         expect(onAction).toHaveBeenCalledTimes(2);
-    });
-
-    it("navigates and filters CommandPalette via keyboard and mouse", () => {
-        const onClose = vi.fn();
-        const onNavigate = vi.fn();
-        const onToggleTheme = vi.fn();
-        const onToggleDirection = vi.fn();
-
-        render(
-            <CommandPalette
-                open={true}
-                onClose={onClose}
-                onNavigate={onNavigate}
-                onToggleTheme={onToggleTheme}
-                onToggleDirection={onToggleDirection}
-            />
-        );
-
-        const dialog = screen.getByTestId("command-palette");
-        const input = screen.getByTestId("command-palette-input");
-
-        fireEvent.keyDown(dialog, {key: "ArrowDown"});
-        fireEvent.keyDown(dialog, {key: "ArrowUp"});
-        fireEvent.keyDown(dialog, {key: "Enter"});
-        expect(onNavigate).toHaveBeenCalledWith("/");
-
-        fireEvent.change(input, {target: {value: "RTL"}});
-        fireEvent.click(screen.getByTestId("command-item-act-dir"));
-        expect(onToggleDirection).toHaveBeenCalledTimes(1);
-
-        fireEvent.change(input, {target: {value: "Appearance"}});
-        fireEvent.click(screen.getByTestId("command-item-act-theme"));
-        expect(onToggleTheme).toHaveBeenCalledTimes(1);
-
-        const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
-        fireEvent.change(input, {target: {value: "Resume"}});
-        fireEvent.click(screen.getByTestId("command-item-act-cv"));
-        expect(openSpy).toHaveBeenCalled();
-        openSpy.mockRestore();
-
-        fireEvent.click(screen.getByTestId("command-palette-backdrop"));
-        expect(onClose).toHaveBeenCalled();
-
-        fireEvent.change(input, {target: {value: "nonexistent-command-xyz"}});
-        expect(
-            screen.getByText(/No matching commands found/i)
-        ).toBeInTheDocument();
-
-        fireEvent.keyDown(dialog, {key: "Escape"});
-        expect(onClose).toHaveBeenCalled();
     });
 
     it("renders PaginationControls and handles page and page-size changes", () => {

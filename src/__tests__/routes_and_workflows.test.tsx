@@ -5,7 +5,7 @@ import PortfolioApp, {createPortfolioQueryClient} from "@/components/PortfolioAp
 import {clearAllProjects} from "@/infrastructure/portfolioApi";
 
 describe("Declarative React Router Workflows, URL Search-Param Sync & Inline Validation", () => {
-    it("renders Overview route, toggles theme/RTL direction, opens CommandPalette, and manages mobile drawer", async () => {
+    it("renders Overview route, toggles theme, and manages mobile drawer", async () => {
         render(
             <PortfolioApp
                 initialEntries={["/"]}
@@ -18,19 +18,9 @@ describe("Declarative React Router Workflows, URL Search-Param Sync & Inline Val
         );
         expect(screen.getByTestId("kpi-card-0")).toHaveTextContent("12+");
 
-        // Theme and LTR/RTL direction toggles
+        // Theme toggle
         fireEvent.click(screen.getByTestId("theme-toggle"));
         expect(document.documentElement.getAttribute("data-theme")).toBe("light");
-
-        fireEvent.click(screen.getByTestId("direction-toggle"));
-        expect(document.documentElement.getAttribute("dir")).toBe("rtl");
-
-        // Command palette shortcut Cmd+K
-        fireEvent.keyDown(window, {key: "k", metaKey: true});
-        expect(screen.getByTestId("command-palette")).toBeInTheDocument();
-        fireEvent.keyDown(screen.getByTestId("command-palette"), {
-            key: "Escape",
-        });
 
         // Mobile navigation drawer open, Escape close, and route auto-close
         fireEvent.click(screen.getByTestId("mobile-menu-toggle"));

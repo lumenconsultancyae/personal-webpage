@@ -3,7 +3,6 @@
 import React, {useMemo, useState} from "react";
 import {useSearchParams} from "react-router-dom";
 import {
-    ExternalLink,
     Plus,
     Quote,
     Trash2,
@@ -171,18 +170,6 @@ export default function TestimonialsRoute() {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-1.5">
-                                    <a
-                                        href={item.linkedin}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={`${item.author} LinkedIn profile`}
-                                        className="btn-secondary p-1.5"
-                                    >
-                                        <ExternalLink
-                                            className="w-3.5 h-3.5"
-                                            aria-hidden="true"
-                                        />
-                                    </a>
                                     <button
                                         type="button"
                                         aria-label={`Delete endorsement from ${item.author}`}

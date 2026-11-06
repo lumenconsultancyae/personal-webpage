@@ -1,12 +1,10 @@
 "use client";
 
 import React, {useEffect, useState} from "react";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import {
     Briefcase,
-    Command,
     Download,
-    Languages,
     Mail,
     Menu,
     Moon,
@@ -14,7 +12,6 @@ import {
     Sun,
     X,
 } from "lucide-react";
-import {CommandPalette} from "./CommandPalette";
 import {
     PERSONAL_NAV_ITEMS,
     PRIMARY_NAV_ITEMS,
@@ -30,11 +27,8 @@ export type {NavItem} from "./navItems";
 
 export function AppShell({children}: { children: React.ReactNode }) {
     const location = useLocation();
-    const navigate = useNavigate();
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [paletteOpen, setPaletteOpen] = useState(false);
     const [theme, setTheme] = useState<"dark" | "light">("dark");
-    const [direction, setDirection] = useState<"ltr" | "rtl">("ltr");
 
     const isPersonalRealm = location.pathname.startsWith("/personal");
     const activeRealm = isPersonalRealm ? "personal" : "professional";
@@ -49,17 +43,11 @@ export function AppShell({children}: { children: React.ReactNode }) {
         if (typeof document !== "undefined") {
             document.documentElement.setAttribute("data-theme", theme);
             document.documentElement.setAttribute("data-realm", activeRealm);
-            document.documentElement.setAttribute("dir", direction);
         }
-    }, [theme, activeRealm, direction]);
+    }, [theme, activeRealm]);
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
-            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-                e.preventDefault();
-                setPaletteOpen((prev) => !prev);
-                return;
-            }
             if (e.key === "Escape" && drawerOpen) {
                 e.preventDefault();
                 setDrawerOpen(false);
@@ -71,12 +59,9 @@ export function AppShell({children}: { children: React.ReactNode }) {
 
     const toggleTheme = () =>
         setTheme((prev) => (prev === "dark" ? "light" : "dark"));
-    const toggleDirection = () =>
-        setDirection((prev) => (prev === "ltr" ? "rtl" : "ltr"));
 
     return (
         <div
-            dir={direction}
             data-theme={theme}
             data-realm={activeRealm}
             className="min-h-screen flex flex-col"
@@ -231,31 +216,6 @@ export function AppShell({children}: { children: React.ReactNode }) {
 
                         <button
                             type="button"
-                            aria-label="Open command palette"
-                            data-testid="command-palette-trigger"
-                            onClick={() => setPaletteOpen(true)}
-                            className="btn-secondary text-xs py-1.5 px-2 inline-flex items-center gap-1.5 whitespace-nowrap"
-                        >
-                            <Command className="w-3.5 h-3.5" aria-hidden="true"/>
-                            <kbd className="kbd-hint">⌘K</kbd>
-                        </button>
-
-                        <button
-                            type="button"
-                            aria-label={`Switch to ${direction === "ltr" ? "RTL" : "LTR"} layout`}
-                            data-testid="direction-toggle"
-                            onClick={toggleDirection}
-                            title="Toggle LTR / RTL direction"
-                            className="btn-secondary py-1.5 px-2 text-xs inline-flex items-center gap-1 whitespace-nowrap"
-                        >
-                            <Languages className="w-3.5 h-3.5" aria-hidden="true"/>
-                            <span className="sr-only sm:not-sr-only uppercase">
-                                {direction}
-                            </span>
-                        </button>
-
-                        <button
-                            type="button"
                             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                             data-testid="theme-toggle"
                             onClick={toggleTheme}
@@ -369,14 +329,6 @@ export function AppShell({children}: { children: React.ReactNode }) {
                     </aside>
                 </div>
             )}
-
-            <CommandPalette
-                open={paletteOpen}
-                onClose={() => setPaletteOpen(false)}
-                onNavigate={(path) => navigate(path)}
-                onToggleTheme={toggleTheme}
-                onToggleDirection={toggleDirection}
-            />
 
             <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8">
                 {children}
