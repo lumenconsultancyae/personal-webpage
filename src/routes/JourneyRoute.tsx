@@ -289,64 +289,87 @@ export default function JourneyRoute() {
                         <aside
                             aria-label="Selected milestone details"
                             data-testid="journey-detail-panel"
-                            className="lg:col-span-5 surface-card p-6 space-y-4"
+                            className="lg:col-span-5 surface-card overflow-hidden flex flex-col"
                         >
-                            <div className="flex items-center justify-between gap-2">
-                                <span className="badge-accent uppercase">
-                                    {activeEntry.type === "work"
-                                        ? "Work Experience"
-                                        : "Education"}
-                                </span>
-                                <span
-                                    style={{color: "var(--text-muted)"}}
-                                    className="text-xs tabular-nums"
-                                >
-                                    {activeEntry.duration}
-                                </span>
-                            </div>
+                            <img
+                                src={
+                                    activeEntry.location.includes("UAE")
+                                        ? "/gallery/dubai-chapter.png"
+                                        : activeEntry.location.includes(
+                                              "Singapore"
+                                          )
+                                          ? "/gallery/singapore-skyline.png"
+                                          : activeEntry.location.includes(
+                                                "Colombia"
+                                            )
+                                            ? "/gallery/colombia-cocora.png"
+                                            : "/gallery/dev-workspace.png"
+                                }
+                                alt={activeEntry.location}
+                                width={500}
+                                height={200}
+                                className="w-full h-40 object-cover"
+                            />
+                            <div className="p-6 space-y-4">
+                                <div className="flex items-center justify-between gap-2">
+                                    <span className="badge-accent uppercase">
+                                        {activeEntry.type === "work"
+                                            ? "Work Experience"
+                                            : "Education"}
+                                    </span>
+                                    <span
+                                        style={{color: "var(--text-muted)"}}
+                                        className="text-xs tabular-nums"
+                                    >
+                                        {activeEntry.duration}
+                                    </span>
+                                </div>
 
-                            <div className="space-y-1">
-                                <h2 className="text-xl font-semibold">
-                                    {activeEntry.title}
-                                </h2>
+                                <div className="space-y-1">
+                                    <h2 className="text-xl font-semibold">
+                                        {activeEntry.title}
+                                    </h2>
+                                    <p
+                                        style={{color: "var(--accent-primary)"}}
+                                        className="text-sm font-medium"
+                                    >
+                                        {activeEntry.organization}
+                                    </p>
+                                    <p
+                                        style={{color: "var(--text-muted)"}}
+                                        className="text-xs inline-flex items-center gap-1"
+                                    >
+                                        <MapPin
+                                            className="w-3.5 h-3.5"
+                                            aria-hidden="true"
+                                        />
+                                        {activeEntry.location}
+                                    </p>
+                                </div>
+
                                 <p
-                                    style={{color: "var(--accent-primary)"}}
-                                    className="text-sm font-medium"
+                                    style={{color: "var(--text-secondary)"}}
+                                    className="text-sm leading-relaxed"
                                 >
-                                    {activeEntry.organization}
+                                    {activeEntry.details}
                                 </p>
-                                <p
-                                    style={{color: "var(--text-muted)"}}
-                                    className="text-xs inline-flex items-center gap-1"
-                                >
-                                    <MapPin
-                                        className="w-3.5 h-3.5"
-                                        aria-hidden="true"
-                                    />
-                                    {activeEntry.location}
-                                </p>
+
+                                {activeEntry.type === "work" &&
+                                    activeEntry.highlights.length > 0 && (
+                                        <div className="flex flex-wrap gap-1.5 pt-2">
+                                            {activeEntry.highlights.map(
+                                                (tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="surface-elevated px-2.5 py-1 text-xs"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                )
+                                            )}
+                                        </div>
+                                    )}
                             </div>
-
-                            <p
-                                style={{color: "var(--text-secondary)"}}
-                                className="text-sm leading-relaxed"
-                            >
-                                {activeEntry.details}
-                            </p>
-
-                            {activeEntry.type === "work" &&
-                                activeEntry.highlights.length > 0 && (
-                                    <div className="flex flex-wrap gap-1.5 pt-2">
-                                        {activeEntry.highlights.map((tag) => (
-                                            <span
-                                                key={tag}
-                                                className="surface-elevated px-2.5 py-1 text-xs"
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
                         </aside>
                     )}
                 </div>

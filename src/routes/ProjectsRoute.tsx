@@ -2,19 +2,9 @@
 
 import React, {useEffect, useMemo, useState} from "react";
 import {useSearchParams} from "react-router-dom";
-import {
-    Edit3,
-    ExternalLink,
-    Plus,
-    Search,
-    Trash2,
-    X,
-} from "lucide-react";
+import {Edit3, ExternalLink, Plus, Search, Trash2, X} from "lucide-react";
 import type {ProjectItem} from "@/domain/models";
-import {
-    PROJECT_CATEGORIES,
-    type ProjectFormParsed,
-} from "@/domain/schemas";
+import {PROJECT_CATEGORIES, type ProjectFormParsed} from "@/domain/schemas";
 import {
     useCreateProjectMutation,
     useDeleteProjectMutation,
@@ -24,12 +14,15 @@ import {
 } from "@/application/usePortfolioQueries";
 import {useToast} from "@/components/ui/ToastProvider";
 import {ConfirmDialog} from "@/components/ui/ConfirmDialog";
-import {
-    ContextualEmptyState,
-    RouteSkeleton,
-} from "@/components/ui/ErrorBoundary";
+import {ContextualEmptyState, RouteSkeleton} from "@/components/ui/ErrorBoundary";
 import {PaginationControls} from "@/components/ui/PaginationControls";
 import {ProjectFormPanel} from "@/components/forms/ProjectFormPanel";
+
+const PROJECT_BANNERS = [
+    {src: "/gallery/dev-workspace.png", label: "Interactive Desktop & Architecture"},
+    {src: "/gallery/group.jpg", label: "RGApps & GamePlan Community Platform"},
+    {src: "/gallery/dubai-chapter.png", label: "Reactive Microservices & Open Source"},
+];
 
 export default function ProjectsRoute() {
     const {data: projects = [], isLoading} = useProjectsQuery();
@@ -235,6 +228,26 @@ export default function ProjectsRoute() {
                     onSubmitForm={onSubmitForm}
                 />
             )}
+
+            <div className="grid gap-3 sm:grid-cols-3">
+                {PROJECT_BANNERS.map((banner) => (
+                    <div
+                        key={banner.src}
+                        className="surface-card overflow-hidden flex items-center gap-3 p-2"
+                    >
+                        <img
+                            src={banner.src}
+                            alt={banner.label}
+                            width={120}
+                            height={72}
+                            className="w-24 h-16 object-cover rounded-lg shrink-0"
+                        />
+                        <span className="text-xs font-semibold leading-snug">
+                            {banner.label}
+                        </span>
+                    </div>
+                ))}
+            </div>
 
             <div className="surface-card p-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="relative flex-1 min-w-[220px]">

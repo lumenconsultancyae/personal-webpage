@@ -125,6 +125,39 @@ export default function TestimonialsRoute() {
                     />
                 )}
 
+                <div className="grid gap-3 sm:grid-cols-3">
+                    {[
+                        {
+                            src: "/gallery/dubai-chapter.png",
+                            caption: "Dubai & Abu Dhabi — Cybersecurity & EdTech Teams",
+                        },
+                        {
+                            src: "/gallery/singapore-skyline.png",
+                            caption: "Singapore — Multinational Fintech Engineering",
+                        },
+                        {
+                            src: "/gallery/colombia-cocora.png",
+                            caption: "Colombia — Distributed Systems & Security R&D",
+                        },
+                    ].map((region) => (
+                        <div
+                            key={region.src}
+                            className="surface-card overflow-hidden flex items-center gap-3 p-2"
+                        >
+                            <img
+                                src={region.src}
+                                alt={region.caption}
+                                width={120}
+                                height={72}
+                                className="w-24 h-16 object-cover rounded-lg shrink-0"
+                            />
+                            <span className="text-xs font-medium leading-snug">
+                                {region.caption}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+
                 <div className="grid gap-4 md:grid-cols-2">
                     {testimonials.map((item) => (
                         <article

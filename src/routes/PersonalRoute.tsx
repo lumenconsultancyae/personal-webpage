@@ -27,6 +27,22 @@ const LIFESTYLE_ICONS = {
     film: <Film className="w-5 h-5" aria-hidden="true"/>,
 } as const;
 
+const LIFESTYLE_IMAGES: Record<string, string> = {
+    "life-boardgames": "/gallery/group.jpg",
+    "life-languages": "/gallery/dev-workspace.png",
+    "life-travel": "/gallery/colombia-cocora.png",
+    "life-music": "/gallery/coffee-lab.png",
+    "life-learning": "/gallery/group3.jpg",
+    "life-movies": "/gallery/group4.jpg",
+};
+
+const TRAVEL_IMAGES: Record<string, string> = {
+    "travel-colombia": "/gallery/colombia-cocora.png",
+    "travel-singapore": "/gallery/singapore-skyline.png",
+    "travel-uae": "/gallery/dubai-chapter.png",
+    "travel-next": "/gallery/family-moment.png",
+};
+
 export default function PersonalRoute() {
     const {data: profile, isLoading} = useProfileOverviewQuery();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -112,29 +128,41 @@ export default function PersonalRoute() {
                         {profile.lifestyle.map((item) => (
                             <article
                                 key={item.id}
-                                className="surface-card p-5 space-y-2.5"
+                                className="surface-card overflow-hidden flex flex-col justify-between"
                             >
-                                <div className="flex items-center gap-2.5">
-                                    <span
-                                        style={{
-                                            backgroundColor:
-                                                "var(--accent-subtle)",
-                                            color: "var(--accent-primary)",
-                                        }}
-                                        className="p-2 rounded-lg"
+                                <img
+                                    src={
+                                        LIFESTYLE_IMAGES[item.id] ??
+                                        "/gallery/group2.jpg"
+                                    }
+                                    alt={item.title}
+                                    width={400}
+                                    height={200}
+                                    className="w-full h-36 object-cover"
+                                />
+                                <div className="p-5 space-y-2.5 flex-1">
+                                    <div className="flex items-center gap-2.5">
+                                        <span
+                                            style={{
+                                                backgroundColor:
+                                                    "var(--accent-subtle)",
+                                                color: "var(--accent-primary)",
+                                            }}
+                                            className="p-2 rounded-lg"
+                                        >
+                                            {LIFESTYLE_ICONS[item.iconName]}
+                                        </span>
+                                        <h3 className="font-semibold text-base">
+                                            {item.title}
+                                        </h3>
+                                    </div>
+                                    <p
+                                        style={{color: "var(--text-secondary)"}}
+                                        className="text-sm leading-relaxed"
                                     >
-                                        {LIFESTYLE_ICONS[item.iconName]}
-                                    </span>
-                                    <h3 className="font-semibold text-base">
-                                        {item.title}
-                                    </h3>
+                                        {item.desc}
+                                    </p>
                                 </div>
-                                <p
-                                    style={{color: "var(--text-secondary)"}}
-                                    className="text-sm leading-relaxed"
-                                >
-                                    {item.desc}
-                                </p>
                             </article>
                         ))}
                     </div>
@@ -147,33 +175,45 @@ export default function PersonalRoute() {
                     <h2 id="travel-heading" className="text-xl font-semibold">
                         Where I&apos;ve Lived — Every Place Tells a Story
                     </h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-4 sm:grid-cols-2">
                         {profile.travel.map((stop) => (
                             <article
                                 key={stop.id}
-                                className="surface-card p-5 space-y-2"
+                                className="surface-card overflow-hidden flex flex-col justify-between"
                             >
-                                <div className="flex items-center justify-between gap-2">
-                                    <span
-                                        style={{color: "var(--accent-primary)"}}
-                                        className="font-semibold text-sm inline-flex items-center gap-1.5"
+                                <img
+                                    src={
+                                        TRAVEL_IMAGES[stop.id] ??
+                                        "/gallery/colombia-cocora.png"
+                                    }
+                                    alt={`${stop.city}, ${stop.country}`}
+                                    width={500}
+                                    height={220}
+                                    className="w-full h-40 object-cover"
+                                />
+                                <div className="p-5 space-y-2 flex-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span
+                                            style={{color: "var(--accent-primary)"}}
+                                            className="font-semibold text-sm inline-flex items-center gap-1.5"
+                                        >
+                                            <MapPin
+                                                className="w-4 h-4"
+                                                aria-hidden="true"
+                                            />
+                                            {stop.city}, {stop.country}
+                                        </span>
+                                        <span className="badge-accent tabular-nums">
+                                            {stop.period}
+                                        </span>
+                                    </div>
+                                    <p
+                                        style={{color: "var(--text-secondary)"}}
+                                        className="text-sm leading-relaxed"
                                     >
-                                        <MapPin
-                                            className="w-4 h-4"
-                                            aria-hidden="true"
-                                        />
-                                        {stop.city}, {stop.country}
-                                    </span>
-                                    <span className="badge-accent tabular-nums">
-                                        {stop.period}
-                                    </span>
+                                        {stop.note}
+                                    </p>
                                 </div>
-                                <p
-                                    style={{color: "var(--text-secondary)"}}
-                                    className="text-sm leading-relaxed"
-                                >
-                                    {stop.note}
-                                </p>
                             </article>
                         ))}
                     </div>
