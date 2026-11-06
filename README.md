@@ -4,14 +4,14 @@ Production-ready personal webpage and engineering portfolio for **Wilson Guevara
 
 ## Key Features & Architecture
 
-- **Declarative Multi-Route Navigation (`React Router`)**:
-  - `/` — Executive Overview, KPI Metrics, Core Competencies & Spotlighted Work
-  - `/journey` — Filterable Career & Education Timeline + Bounded Milestone Table
+- **Declarative Multi-Route Navigation (`React Router` + `Framer Motion`)**:
+  - `/` — **Professional Blog & Executive Overview**: Typewriter Hero, CV download (`/FinalResume.pdf`), LinkedIn/GitLab links, 2x2 KPI Metrics, and a **Minimal-Scroll Split-Pane Engineering Blog Reader** (`01`–`05` career stories)
+  - `/experience` & `/journey` — Filterable Career & Education Timeline + Bounded Milestone Table
   - `/projects` — Paginated Projects Explorer with Debounced Search (`q`), Category/Sort Filters, Progressive Disclosure Create/Edit Drawer, and Accessible Delete Confirmation + Undo Toast
-  - `/testimonials` — Peer Endorsements & 23-Technology Skills Matrix
-  - `/personal` — Lifestyle, Global Chapters, Philosophy, 10 Fun Facts & Lightbox Photo Gallery
+  - `/skills` & `/endorsements` — Peer Endorsements & 23-Technology Skills Matrix
+  - `/personal` — **Personal Blog & Single-Stage Tab Deck**: Split-Pane Personal Blog (Board Games, Favorite Movies, Favorite Music, Fatherhood & Coffee), Global Chapters, Philosophy, 10 Fun Facts & Lightbox Photo Gallery
   - `/contact` — Schema-Validated Direct Inquiry Form & Bounded Inquiries Log
-- **Keyboard Command Palette (`Cmd/Ctrl + K`)**, **Dark/Light Theme Toggle**, **LTR/RTL Logical CSS Support**, and **Responsive Off-Canvas Mobile Navigation Drawer**.
+- **Minimal-Scroll Responsive Design**, **Framer Motion Spring Route & Stage Transitions**, **Floating Quick-Dot Navigator**, **Dark/Light Theme Toggle**, and **Responsive Off-Canvas Mobile Navigation Drawer**.
 - **UX Redesign Documentation & Screenshots**: See [`docs/UX_IMPROVEMENTS.md`](./docs/UX_IMPROVEMENTS.md) and `docs/screenshots/ux_improvements/`.
 
 ## Development & Verification Commands

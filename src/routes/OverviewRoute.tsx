@@ -9,7 +9,6 @@ import {
     Download,
     ExternalLink,
     Mail,
-    Phone,
     Sparkles,
 } from "lucide-react";
 import {useProfileOverviewQuery} from "@/application/usePortfolioQueries";
@@ -64,32 +63,44 @@ export default function OverviewRoute() {
     }
 
     return (
-        <div data-testid="overview-route" className="space-y-10">
-            {/* Hero with Typewriter & Backspace Animation, CV Download & LinkedIn Links */}
+        <div data-testid="overview-route" className="space-y-3.5">
+            {/* Compact Single-Screen Hero with Typewriter, CV, LinkedIn & Metrics */}
             <section
                 aria-labelledby="hero-heading"
-                className="surface-card p-6 sm:p-10 relative overflow-hidden"
+                className="surface-card p-3.5 sm:p-4 relative overflow-hidden"
             >
-                <div className="grid gap-8 lg:grid-cols-12 items-center">
-                    <div className="lg:col-span-8 space-y-5">
-                        <div className="inline-flex items-center gap-2 badge-accent">
-                            <Briefcase className="w-3.5 h-3.5" aria-hidden="true"/>
-                            <span>Staff Software &amp; Data Engineer · Engineering Blog &amp; CV</span>
+                <div className="grid gap-3.5 lg:grid-cols-12 items-center">
+                    <div className="lg:col-span-7 space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="inline-flex items-center gap-1 badge-accent text-[11px] py-0.5 px-2">
+                                    <Briefcase className="w-3 h-3" aria-hidden="true"/>
+                                    <span>Staff Software &amp; Data Engineer</span>
+                                </span>
+                                <span
+                                    style={{color: "var(--text-muted)"}}
+                                    className="text-xs font-mono"
+                                >
+                                    {profile.handle} · Dubai, UAE
+                                </span>
+                            </div>
                         </div>
 
                         <h1
                             id="hero-heading"
-                            className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight"
+                            className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-snug flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5"
                         >
-                            Hi, I am{" "}
-                            <span style={{color: "var(--accent-primary)"}}>
-                                {profile.fullName}
+                            <span>
+                                Hi, I am{" "}
+                                <span style={{color: "var(--accent-primary)"}}>
+                                    {profile.fullName}
+                                </span>
                             </span>
                             <span
                                 style={{color: "var(--text-secondary)"}}
-                                className="block text-xl sm:text-2xl lg:text-3xl font-medium mt-2 min-h-[1.5em]"
+                                className="text-base sm:text-lg lg:text-xl font-medium"
                             >
-                                I{" "}
+                                — I{" "}
                                 <span
                                     aria-live="polite"
                                     data-testid="dynamic-role-text"
@@ -110,20 +121,37 @@ export default function OverviewRoute() {
 
                         <p
                             style={{color: "var(--text-secondary)"}}
-                            className="text-base sm:text-lg max-w-2xl leading-relaxed"
+                            className="text-xs max-w-2xl leading-relaxed"
                         >
-                            {profile.pitch} Welcome to my professional engineering blog &amp; interactive CV—where I share architecture stories, production case studies, and open-source projects.
+                            {profile.summaryParagraphs[0]}
                         </p>
 
-                        {/* Primary Actions: CV, LinkedIn, GitLab, Projects, Personal Blog */}
-                        <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                        {/* Compact Competency Pills */}
+                        <div className="flex flex-wrap gap-1">
+                            {profile.coreCompetencies.map((item) => (
+                                <span
+                                    key={item}
+                                    className="surface-elevated px-2 py-0.5 text-[10px] sm:text-[11px] font-medium inline-flex items-center gap-1"
+                                >
+                                    <CheckCircle2
+                                        style={{color: "var(--accent-secondary)"}}
+                                        className="w-2.5 h-2.5 shrink-0"
+                                        aria-hidden="true"
+                                    />
+                                    <span>{item}</span>
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* Primary Actions: CV, LinkedIn, Projects, Full CV Timeline, Personal Blog, Contact */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
                             <a
                                 href="/FinalResume.pdf"
                                 download
                                 data-testid="hero-cta-cv"
-                                className="btn-primary inline-flex items-center gap-2 text-sm"
+                                className="btn-primary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
                             >
-                                <Download className="w-4 h-4" aria-hidden="true"/>
+                                <Download className="w-3 h-3" aria-hidden="true"/>
                                 Download CV (PDF)
                             </a>
 
@@ -132,35 +160,25 @@ export default function OverviewRoute() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 data-testid="hero-cta-linkedin"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                                className="btn-secondary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
                             >
-                                <span>LinkedIn Profile</span>
-                                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
-                            </a>
-
-                            <a
-                                href="https://gitlab.com/wilsonr990"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
-                            >
-                                <span>GitLab</span>
-                                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                                <span>LinkedIn</span>
+                                <ExternalLink className="w-3 h-3" aria-hidden="true"/>
                             </a>
 
                             <Link
                                 to="/projects"
                                 data-testid="hero-cta-projects"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                                className="btn-secondary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
                             >
-                                <Briefcase className="w-4 h-4" aria-hidden="true"/>
-                                Projects Catalog
+                                <Briefcase className="w-3 h-3" aria-hidden="true"/>
+                                Projects
                             </Link>
 
                             <Link
                                 to="/journey"
                                 data-testid="hero-cta-journey"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                                className="btn-secondary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
                             >
                                 Full CV Timeline
                             </Link>
@@ -168,39 +186,63 @@ export default function OverviewRoute() {
                             <Link
                                 to="/personal"
                                 data-testid="hero-cta-personal"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                                className="btn-secondary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
                             >
                                 <Sparkles
                                     style={{color: "var(--accent-primary)"}}
-                                    className="w-4 h-4"
+                                    className="w-3 h-3"
                                     aria-hidden="true"
                                 />
-                                Personal Blog (Board Games, Movies &amp; Music)
-                                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true"/>
+                                Personal Blog
+                                <ArrowRight className="w-3 h-3" aria-hidden="true"/>
+                            </Link>
+
+                            <Link
+                                to="/contact"
+                                data-testid="overview-contact-link"
+                                className="btn-secondary inline-flex items-center gap-1 text-xs py-1.5 px-2.5"
+                            >
+                                <Mail className="w-3 h-3" aria-hidden="true"/>
+                                Contact
                             </Link>
                         </div>
+                    </div>
 
-                        {/* Compact Executive KPI Strip */}
+                    {/* Right Column: Compact Avatar + 2x2 KPI Bento Grid */}
+                    <div className="lg:col-span-5 grid sm:grid-cols-12 gap-2.5 items-center">
+                        <div className="sm:col-span-4 surface-elevated p-2 rounded-xl flex flex-col items-center text-center">
+                            <img
+                                src="/profile-hi.png"
+                                alt="Wilson Guevara avatar"
+                                width={120}
+                                height={160}
+                                className="w-20 sm:w-24 h-24 sm:h-28 object-contain mx-auto"
+                            />
+                            <p className="font-semibold text-[11px] mt-1">
+                                {profile.fullName}
+                            </p>
+                        </div>
+
                         <div
                             aria-label="Key career metrics"
-                            className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3"
+                            className="sm:col-span-8 grid grid-cols-2 gap-2"
                         >
                             {profile.kpis.map((kpi, idx) => (
                                 <div
                                     key={kpi.label}
                                     data-testid={`kpi-card-${idx}`}
-                                    className="surface-elevated px-3.5 py-2.5"
+                                    className="surface-elevated p-2.5"
                                 >
                                     <p
                                         data-numeric="true"
                                         style={{color: "var(--accent-primary)"}}
-                                        className="text-xl font-bold tabular-nums"
+                                        className="text-base sm:text-lg font-bold tabular-nums leading-tight"
                                     >
                                         {kpi.value}
                                     </p>
                                     <p
                                         style={{color: "var(--text-muted)"}}
-                                        className="text-xs font-medium leading-snug"
+                                        className="text-[10px] sm:text-[11px] font-medium leading-snug"
                                     >
                                         {kpi.label}
                                     </p>
@@ -208,150 +250,16 @@ export default function OverviewRoute() {
                             ))}
                         </div>
                     </div>
-
-                    <div className="lg:col-span-4 flex justify-center">
-                        <div className="surface-elevated p-5 rounded-2xl flex flex-col items-center text-center max-w-xs w-full">
-                            <img
-                                src="/profile-hi.png"
-                                alt="Wilson Guevara avatar"
-                                width={210}
-                                height={310}
-                                className="w-44 h-56 object-contain mx-auto"
-                            />
-                            <div className="mt-3 space-y-0.5">
-                                <p className="font-semibold text-sm">
-                                    {profile.fullName}
-                                </p>
-                                <p
-                                    style={{color: "var(--text-muted)"}}
-                                    className="text-xs"
-                                >
-                                    {profile.handle} · Dubai, UAE
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
 
-            {/* Professional Engineering & Experience Blog Feed */}
+            {/* Split-Pane Animated Professional Blog & Experience Reader */}
             <BlogFeedSection
                 heading="Engineering Blog, Experience & Architecture Stories"
-                subheading="Read about my experience across AI/MLOps in Dubai, fintech microservices in Singapore, EdTech at Guinness World Record scale, and open-source compilers"
+                subheading="Select any chapter to read about my work in AI/MLOps, Fintech, EdTech, and Open-Source Compilers"
                 posts={PROFESSIONAL_BLOG_POSTS}
                 testIdPrefix="professional"
             />
-
-            {/* CV Summary & Direct Contact */}
-            <section
-                aria-labelledby="competencies-heading"
-                className="grid gap-6 lg:grid-cols-12"
-            >
-                <div className="lg:col-span-7 surface-card p-6 space-y-4">
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                        <h2 id="competencies-heading" className="text-lg font-semibold">
-                            CV Executive Summary &amp; Core Competencies
-                        </h2>
-                        <a
-                            href="/FinalResume.pdf"
-                            download
-                            className="btn-secondary text-xs py-1 px-2.5 inline-flex items-center gap-1.5"
-                        >
-                            <Download className="w-3.5 h-3.5" aria-hidden="true"/>
-                            Download PDF Resume
-                        </a>
-                    </div>
-                    <p
-                        style={{color: "var(--text-secondary)"}}
-                        className="text-sm leading-relaxed"
-                    >
-                        {profile.summaryParagraphs[0]}{" "}
-                        {profile.summaryParagraphs[1]}
-                    </p>
-                    <ul className="grid gap-2.5 sm:grid-cols-2 pt-1">
-                        {profile.coreCompetencies.map((item) => (
-                            <li
-                                key={item}
-                                className="surface-elevated px-3.5 py-2.5 flex items-center gap-2.5 text-sm"
-                            >
-                                <CheckCircle2
-                                    style={{color: "var(--accent-secondary)"}}
-                                    className="w-4 h-4 shrink-0"
-                                    aria-hidden="true"
-                                />
-                                <span>{item}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                <div className="lg:col-span-5 surface-card p-6 flex flex-col justify-between space-y-4">
-                    <div className="space-y-2">
-                        <h2 className="text-lg font-semibold">
-                            Connect on LinkedIn or Direct Contact
-                        </h2>
-                        <p
-                            style={{color: "var(--text-secondary)"}}
-                            className="text-sm leading-relaxed"
-                        >
-                            Whether you want to collaborate on distributed systems, discuss AI/MLOps architecture, or just say hi — my inbox and LinkedIn are always open.
-                        </p>
-                    </div>
-
-                    <div className="space-y-2">
-                        <a
-                            href="https://www.linkedin.com/in/wilsonr990/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm hover:opacity-90 transition"
-                        >
-                            <span className="font-medium">
-                                linkedin.com/in/wilsonr990
-                            </span>
-                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
-                        </a>
-
-                        <a
-                            href="mailto:wilsonr100@gmail.com"
-                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm hover:opacity-90 transition"
-                        >
-                            <span className="inline-flex items-center gap-2.5">
-                                <Mail
-                                    style={{color: "var(--accent-primary)"}}
-                                    className="w-4 h-4"
-                                    aria-hidden="true"
-                                />
-                                <span>wilsonr100@gmail.com</span>
-                            </span>
-                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
-                        </a>
-
-                        <a
-                            href="tel:+971565712642"
-                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm tabular-nums hover:opacity-90 transition"
-                        >
-                            <span className="inline-flex items-center gap-2.5">
-                                <Phone
-                                    style={{color: "var(--accent-secondary)"}}
-                                    className="w-4 h-4"
-                                    aria-hidden="true"
-                                />
-                                <span>+971 565712642</span>
-                            </span>
-                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
-                        </a>
-                    </div>
-
-                    <Link
-                        to="/contact"
-                        data-testid="overview-contact-link"
-                        className="btn-primary w-full text-center text-sm inline-flex items-center justify-center gap-2"
-                    >
-                        Send a Direct Message
-                        <ArrowRight className="w-4 h-4" aria-hidden="true"/>
-                    </Link>
-                </div>
-            </section>
         </div>
     );
 }

@@ -131,11 +131,19 @@ describe("Declarative React Router Workflows, URL Search-Param Sync & Inline Val
         fireEvent.click(screen.getByTestId("skill-cat-Backend"));
         expect(screen.getByText("Kotlin")).toBeInTheDocument();
 
-        // Navigate to Personal route and open gallery lightbox
+        // Navigate to Personal route, test split-pane blog reader & tab switching, and open gallery lightbox
         fireEvent.click(screen.getByTestId("nav-link-personal"));
         await waitFor(() =>
             expect(screen.getByTestId("personal-route")).toBeInTheDocument()
         );
+        fireEvent.click(screen.getByTestId("personal-next-story"));
+        fireEvent.click(screen.getByTestId("personal-prev-story"));
+        fireEvent.click(screen.getByTestId("blog-select-personal-movies"));
+        fireEvent.click(screen.getByTestId("blog-toggle-personal-movies"));
+        fireEvent.click(screen.getByTestId("personal-tab-travel"));
+        fireEvent.click(screen.getByTestId("personal-tab-philosophy"));
+        fireEvent.click(screen.getByTestId("personal-tab-funfacts"));
+        fireEvent.click(screen.getByTestId("personal-tab-gallery"));
         fireEvent.click(screen.getByTestId("gallery-card-gal-1"));
         expect(screen.getByTestId("gallery-lightbox")).toBeInTheDocument();
         fireEvent.click(screen.getByTestId("gallery-lightbox-close"));

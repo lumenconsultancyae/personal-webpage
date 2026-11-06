@@ -2,6 +2,7 @@
 
 import React, {useState} from "react";
 import {useSearchParams} from "react-router-dom";
+import {AnimatePresence, motion} from "framer-motion";
 import {
     BookOpen,
     Film,
@@ -21,22 +22,13 @@ import {BlogFeedSection} from "@/components/ui/BlogFeedSection";
 import {RouteSkeleton} from "@/components/ui/ErrorBoundary";
 
 const LIFESTYLE_ICONS = {
-    puzzle: <Puzzle className="w-5 h-5" aria-hidden="true"/>,
-    languages: <Languages className="w-5 h-5" aria-hidden="true"/>,
-    plane: <Plane className="w-5 h-5" aria-hidden="true"/>,
-    music: <Music className="w-5 h-5" aria-hidden="true"/>,
-    book: <BookOpen className="w-5 h-5" aria-hidden="true"/>,
-    film: <Film className="w-5 h-5" aria-hidden="true"/>,
+    puzzle: <Puzzle className="w-3.5 h-3.5" aria-hidden="true"/>,
+    languages: <Languages className="w-3.5 h-3.5" aria-hidden="true"/>,
+    plane: <Plane className="w-3.5 h-3.5" aria-hidden="true"/>,
+    music: <Music className="w-3.5 h-3.5" aria-hidden="true"/>,
+    book: <BookOpen className="w-3.5 h-3.5" aria-hidden="true"/>,
+    film: <Film className="w-3.5 h-3.5" aria-hidden="true"/>,
 } as const;
-
-const LIFESTYLE_IMAGES: Record<string, string> = {
-    "life-boardgames": "/gallery/group.jpg",
-    "life-languages": "/gallery/dev-workspace.png",
-    "life-travel": "/gallery/colombia-cocora.png",
-    "life-music": "/gallery/music-vinyl.png",
-    "life-learning": "/gallery/coffee-lab.png",
-    "life-movies": "/gallery/movies-cinema.png",
-};
 
 const TRAVEL_IMAGES: Record<string, string> = {
     "travel-colombia": "/gallery/colombia-cocora.png",
@@ -48,44 +40,52 @@ const TRAVEL_IMAGES: Record<string, string> = {
 export default function PersonalRoute() {
     const {data: profile, isLoading} = useProfileOverviewQuery();
     const [searchParams, setSearchParams] = useSearchParams();
-    const activeTab = searchParams.get("tab") ?? "all";
+    const rawTab = searchParams.get("tab") ?? "lifestyle";
+    const activeTab = rawTab === "all" ? "lifestyle" : rawTab;
     const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
     if (isLoading || !profile) {
-        return <RouteSkeleton rows={4}/>;
+        return <RouteSkeleton rows={3}/>;
     }
 
     const tabs = [
-        {id: "all", label: "All Sections"},
-        {id: "lifestyle", label: "Lifestyle & Passions"},
-        {id: "travel", label: "Global Chapters"},
+        {id: "lifestyle", label: "Personal Blog (Games, Movies & Music)"},
+        {id: "travel", label: "Where I've Lived"},
         {id: "philosophy", label: "Philosophy"},
         {id: "funfacts", label: "10 Fun Facts"},
         {id: "gallery", label: "Photo Gallery"},
     ] as const;
 
-    const showSection = (id: string) =>
-        activeTab === "all" || activeTab === id;
+    const selectTab = (id: string) => {
+        const next = new URLSearchParams(searchParams);
+        if (id === "lifestyle") {
+            next.delete("tab");
+        } else {
+            next.set("tab", id);
+        }
+        setSearchParams(next);
+    };
 
     return (
-        <div data-testid="personal-route" className="space-y-8">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                        Beyond the Keyboard — Personal Blog &amp; Curated Favorites
+        <div data-testid="personal-route" className="space-y-3">
+            {/* Compact Header + Animated Section Switcher */}
+            <div className="surface-card p-3 sm:p-3.5 flex flex-wrap items-center justify-between gap-2.5">
+                <div className="min-w-0">
+                    <h1 className="text-base sm:text-lg font-bold tracking-tight">
+                        Beyond the Keyboard — Personal Blog &amp; Curated World
                     </h1>
                     <p
                         style={{color: "var(--text-secondary)"}}
-                        className="text-sm mt-1"
+                        className="text-xs truncate"
                     >
-                        Blogs on my favorite board games (@bgameplan), favorite movies, favorite music, fatherhood, and global chapters
+                        Favorite board games (@bgameplan), favorite movies, favorite music, fatherhood &amp; global chapters
                     </p>
                 </div>
 
                 <div
                     role="tablist"
                     aria-label="Personal page sections"
-                    className="flex flex-wrap gap-1.5"
+                    className="flex flex-wrap gap-1"
                 >
                     {tabs.map((tab) => {
                         const isCurrent = activeTab === tab.id;
@@ -96,21 +96,11 @@ export default function PersonalRoute() {
                                 role="tab"
                                 aria-selected={isCurrent}
                                 data-testid={`personal-tab-${tab.id}`}
-                                onClick={() => {
-                                    const next = new URLSearchParams(
-                                        searchParams
-                                    );
-                                    if (tab.id === "all") {
-                                        next.delete("tab");
-                                    } else {
-                                        next.set("tab", tab.id);
-                                    }
-                                    setSearchParams(next);
-                                }}
+                                onClick={() => selectTab(tab.id)}
                                 className={
                                     isCurrent
-                                        ? "btn-primary text-xs"
-                                        : "btn-secondary text-xs"
+                                        ? "btn-primary text-[11px] py-1 px-2.5"
+                                        : "btn-secondary text-[11px] py-1 px-2.5"
                                 }
                             >
                                 {tab.label}
@@ -120,244 +110,280 @@ export default function PersonalRoute() {
                 </div>
             </div>
 
-            {/* Personal Blog Posts: Board Games, Favorite Movies, Favorite Music, Fatherhood & Coffee */}
-            {showSection("lifestyle") && (
-                <BlogFeedSection
-                    heading="Personal Blog: Board Games, Movies, Music & Life"
-                    subheading="Stories and curated lists on tabletop game design (@bgameplan), mind-bending cinema, coding soundtracks, and specialty coffee"
-                    posts={PERSONAL_BLOG_POSTS}
-                    testIdPrefix="personal"
-                />
-            )}
+            {/* Single-Stage Animated Content Deck (Minimal Scroll) */}
+            <AnimatePresence initial={false}>
+                {activeTab === "lifestyle" && (
+                    <motion.div
+                        key="tab-lifestyle"
+                        initial={{opacity: 0, y: 14}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -12}}
+                        transition={{type: "spring", stiffness: 260, damping: 24}}
+                        className="space-y-2.5"
+                    >
+                        <BlogFeedSection
+                            heading="Personal Blog: Board Games, Movies, Music & Life"
+                            subheading="Select a topic on the left to read my notes on tabletop strategy (@bgameplan), cinema, coding playlists, and coffee"
+                            posts={PERSONAL_BLOG_POSTS}
+                            testIdPrefix="personal"
+                        />
 
-            {/* Lifestyle Grid */}
-            {showSection("lifestyle") && (
-                <section aria-labelledby="lifestyle-heading" className="space-y-4">
-                    <h2 id="lifestyle-heading" className="text-xl font-semibold">
-                        Who Am I? — Lifestyle &amp; Passions
-                    </h2>
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {profile.lifestyle.map((item) => (
-                            <article
-                                key={item.id}
-                                className="surface-card overflow-hidden flex flex-col justify-between"
-                            >
-                                <img
-                                    src={
-                                        LIFESTYLE_IMAGES[item.id] ??
-                                        "/gallery/group2.jpg"
-                                    }
-                                    alt={item.title}
-                                    width={400}
-                                    height={200}
-                                    className="w-full h-36 object-cover"
-                                />
-                                <div className="p-5 space-y-2.5 flex-1">
-                                    <div className="flex items-center gap-2.5">
-                                        <span
-                                            style={{
-                                                backgroundColor:
-                                                    "var(--accent-subtle)",
-                                                color: "var(--accent-primary)",
-                                            }}
-                                            className="p-2 rounded-lg"
-                                        >
-                                            {LIFESTYLE_ICONS[item.iconName]}
-                                        </span>
-                                        <h3 className="font-semibold text-base">
-                                            {item.title}
-                                        </h3>
-                                    </div>
-                                    <p
-                                        style={{color: "var(--text-secondary)"}}
-                                        className="text-sm leading-relaxed"
-                                    >
-                                        {item.desc}
-                                    </p>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* Global Chapters / Travel */}
-            {showSection("travel") && (
-                <section aria-labelledby="travel-heading" className="space-y-4">
-                    <h2 id="travel-heading" className="text-xl font-semibold">
-                        Where I&apos;ve Lived — Every Place Tells a Story
-                    </h2>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        {profile.travel.map((stop) => (
-                            <article
-                                key={stop.id}
-                                className="surface-card overflow-hidden flex flex-col justify-between"
-                            >
-                                <img
-                                    src={
-                                        TRAVEL_IMAGES[stop.id] ??
-                                        "/gallery/colombia-cocora.png"
-                                    }
-                                    alt={`${stop.city}, ${stop.country}`}
-                                    width={500}
-                                    height={220}
-                                    className="w-full h-40 object-cover"
-                                />
-                                <div className="p-5 space-y-2 flex-1">
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span
-                                            style={{color: "var(--accent-primary)"}}
-                                            className="font-semibold text-sm inline-flex items-center gap-1.5"
-                                        >
-                                            <MapPin
-                                                className="w-4 h-4"
-                                                aria-hidden="true"
-                                            />
-                                            {stop.city}, {stop.country}
-                                        </span>
-                                        <span className="badge-accent tabular-nums">
-                                            {stop.period}
-                                        </span>
-                                    </div>
-                                    <p
-                                        style={{color: "var(--text-secondary)"}}
-                                        className="text-sm leading-relaxed"
-                                    >
-                                        {stop.note}
-                                    </p>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* Philosophy */}
-            {showSection("philosophy") && (
-                <section
-                    aria-labelledby="philosophy-heading"
-                    className="space-y-4"
-                >
-                    <h2 id="philosophy-heading" className="text-xl font-semibold">
-                        Engineering &amp; Life Philosophy
-                    </h2>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                        {profile.philosophies.map((phil) => (
-                            <article
-                                key={phil.id}
-                                className="surface-card p-5 space-y-2"
-                            >
-                                <div
-                                    style={{color: "var(--accent-primary)"}}
-                                    className="font-semibold text-sm flex items-center gap-2"
+                        {/* Compact Single-Row Passions Pill Bar */}
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            {profile.lifestyle.map((item) => (
+                                <span
+                                    key={item.id}
+                                    title={item.desc}
+                                    className="surface-card px-2.5 py-1 text-[11px] font-medium inline-flex items-center gap-1.5"
                                 >
-                                    <Quote
-                                        className="w-4 h-4 shrink-0"
-                                        aria-hidden="true"
-                                    />
-                                    <span>{phil.quote}</span>
-                                </div>
-                                <p
-                                    style={{color: "var(--text-secondary)"}}
-                                    className="text-sm leading-relaxed"
-                                >
-                                    {phil.context}
-                                </p>
-                            </article>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {/* 10 Fun Facts */}
-            {showSection("funfacts") && (
-                <section aria-labelledby="funfacts-heading" className="space-y-4">
-                    <div className="flex items-center justify-between gap-2">
-                        <h2 id="funfacts-heading" className="text-xl font-semibold">
-                            10 Fun Facts
-                        </h2>
-                        {activeTab === "all" && profile.funFacts.length > 4 && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const next = new URLSearchParams(searchParams);
-                                    next.set("tab", "funfacts");
-                                    setSearchParams(next);
-                                }}
-                                className="btn-secondary text-xs"
-                            >
-                                Show all {profile.funFacts.length} facts
-                            </button>
-                        )}
-                    </div>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                        {(activeTab === "all"
-                            ? profile.funFacts.slice(0, 4)
-                            : profile.funFacts
-                        ).map((item) => (
-                            <div
-                                key={item.id}
-                                className="surface-card p-4 flex items-start gap-3"
-                            >
-                                <span className="badge-accent tabular-nums shrink-0">
-                                    #{item.order}
+                                    <span style={{color: "var(--accent-primary)"}}>
+                                        {LIFESTYLE_ICONS[item.iconName]}
+                                    </span>
+                                    <span>{item.title}</span>
                                 </span>
-                                <p
-                                    style={{color: "var(--text-secondary)"}}
-                                    className="text-sm"
-                                >
-                                    {item.fact}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
 
-            {/* Photo Gallery */}
-            {showSection("gallery") && (
-                <section aria-labelledby="gallery-heading" className="space-y-4">
-                    <div className="flex items-center justify-between">
+                {activeTab === "travel" && (
+                    <motion.section
+                        key="tab-travel"
+                        aria-labelledby="travel-heading"
+                        initial={{opacity: 0, y: 14}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -12}}
+                        transition={{type: "spring", stiffness: 260, damping: 24}}
+                        className="space-y-3"
+                    >
+                        <h2 id="travel-heading" className="text-base font-semibold">
+                            Where I&apos;ve Lived — Every Place Tells a Story
+                        </h2>
+                        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                            {profile.travel.map((stop) => (
+                                <article
+                                    key={stop.id}
+                                    className="surface-card overflow-hidden flex flex-col justify-between"
+                                >
+                                    <img
+                                        src={
+                                            TRAVEL_IMAGES[stop.id] ??
+                                            "/gallery/colombia-cocora.png"
+                                        }
+                                        alt={`${stop.city}, ${stop.country}`}
+                                        width={400}
+                                        height={160}
+                                        className="w-full h-32 object-cover"
+                                    />
+                                    <div className="p-3 space-y-1.5 flex-1">
+                                        <div className="flex items-center justify-between gap-1.5">
+                                            <span
+                                                style={{
+                                                    color: "var(--accent-primary)",
+                                                }}
+                                                className="font-semibold text-xs inline-flex items-center gap-1"
+                                            >
+                                                <MapPin
+                                                    className="w-3.5 h-3.5 shrink-0"
+                                                    aria-hidden="true"
+                                                />
+                                                {stop.city}, {stop.country}
+                                            </span>
+                                            <span className="badge-accent tabular-nums text-[10px]">
+                                                {stop.period}
+                                            </span>
+                                        </div>
+                                        <p
+                                            style={{
+                                                color: "var(--text-secondary)",
+                                            }}
+                                            className="text-xs leading-relaxed"
+                                        >
+                                            {stop.note}
+                                        </p>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
+
+                {activeTab === "philosophy" && (
+                    <motion.section
+                        key="tab-philosophy"
+                        aria-labelledby="philosophy-heading"
+                        initial={{opacity: 0, y: 14}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -12}}
+                        transition={{type: "spring", stiffness: 260, damping: 24}}
+                        className="space-y-3"
+                    >
+                        <h2
+                            id="philosophy-heading"
+                            className="text-base font-semibold"
+                        >
+                            Engineering &amp; Life Philosophy
+                        </h2>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            {profile.philosophies.map((phil) => (
+                                <article
+                                    key={phil.id}
+                                    className="surface-card p-4 space-y-1.5"
+                                >
+                                    <div
+                                        style={{color: "var(--accent-primary)"}}
+                                        className="font-semibold text-sm flex items-center gap-2"
+                                    >
+                                        <Quote
+                                            className="w-4 h-4 shrink-0"
+                                            aria-hidden="true"
+                                        />
+                                        <span>{phil.quote}</span>
+                                    </div>
+                                    <p
+                                        style={{color: "var(--text-secondary)"}}
+                                        className="text-xs sm:text-sm leading-relaxed"
+                                    >
+                                        {phil.context}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
+
+                {activeTab === "funfacts" && (
+                    <motion.section
+                        key="tab-funfacts"
+                        aria-labelledby="funfacts-heading"
+                        initial={{opacity: 0, y: 14}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -12}}
+                        transition={{type: "spring", stiffness: 260, damping: 24}}
+                        className="space-y-3"
+                    >
+                        <h2 id="funfacts-heading" className="text-base font-semibold">
+                            10 Fun Facts About Me
+                        </h2>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                            {profile.funFacts.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="surface-card p-3 flex items-start gap-2.5"
+                                >
+                                    <span className="badge-accent tabular-nums shrink-0 text-[10px]">
+                                        #{item.order}
+                                    </span>
+                                    <p
+                                        style={{color: "var(--text-secondary)"}}
+                                        className="text-xs"
+                                    >
+                                        {item.fact}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
+
+                {activeTab === "gallery" && (
+                    <motion.section
+                        key="tab-gallery"
+                        aria-labelledby="gallery-heading"
+                        initial={{opacity: 0, y: 14}}
+                        animate={{opacity: 1, y: 0}}
+                        exit={{opacity: 0, y: -12}}
+                        transition={{type: "spring", stiffness: 260, damping: 24}}
+                        className="space-y-3"
+                    >
                         <h2
                             id="gallery-heading"
-                            className="text-xl font-semibold inline-flex items-center gap-2"
+                            className="text-base font-semibold inline-flex items-center gap-2"
                         >
                             <Sparkles
                                 style={{color: "var(--accent-primary)"}}
-                                className="w-5 h-5"
+                                className="w-4 h-4"
                                 aria-hidden="true"
                             />
-                            Snapshots &amp; Photo Gallery
+                            Snapshots &amp; Photo Gallery (Click any photo to enlarge)
                         </h2>
-                    </div>
+                        <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+                            {profile.gallery.map((img) => (
+                                <button
+                                    key={img.id}
+                                    type="button"
+                                    data-testid={`gallery-card-${img.id}`}
+                                    onClick={() => setLightboxItem(img)}
+                                    className="surface-card overflow-hidden text-start flex flex-col justify-between group hover:opacity-95 transition"
+                                >
+                                    <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        width={360}
+                                        height={180}
+                                        className="w-full h-28 object-cover"
+                                    />
+                                    <div className="p-2 space-y-0.5">
+                                        <span className="badge-accent text-[10px]">
+                                            {img.category}
+                                        </span>
+                                        <p
+                                            style={{
+                                                color: "var(--text-secondary)",
+                                            }}
+                                            className="text-[11px] leading-snug line-clamp-2"
+                                        >
+                                            {img.caption}
+                                        </p>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
+            </AnimatePresence>
 
-                    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+            {/* Compact Snapshots Strip when viewing non-gallery tabs */}
+            {activeTab !== "gallery" && (
+                <section
+                    aria-label="Snapshots quick strip"
+                    className="surface-card p-2.5 space-y-1.5"
+                >
+                    <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-semibold inline-flex items-center gap-1.5">
+                            <Sparkles
+                                style={{color: "var(--accent-primary)"}}
+                                className="w-3 h-3"
+                                aria-hidden="true"
+                            />
+                            Snapshots &amp; Life Gallery (Click any photo to enlarge)
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => selectTab("gallery")}
+                            className="btn-secondary text-[10px] py-0.5 px-2"
+                        >
+                            Expand Gallery
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
                         {profile.gallery.map((img) => (
                             <button
                                 key={img.id}
                                 type="button"
                                 data-testid={`gallery-card-${img.id}`}
                                 onClick={() => setLightboxItem(img)}
-                                className="surface-card overflow-hidden text-start flex flex-col justify-between group hover:opacity-95 transition"
+                                title={img.caption}
+                                className="overflow-hidden rounded-lg border transition hover:scale-[1.03] cursor-pointer"
+                                style={{borderColor: "var(--border-subtle)"}}
                             >
                                 <img
                                     src={img.src}
                                     alt={img.alt}
-                                    width={400}
-                                    height={260}
-                                    className="w-full h-40 object-cover"
+                                    width={120}
+                                    height={70}
+                                    className="w-full h-11 sm:h-12 object-cover"
                                 />
-                                <div className="p-3 space-y-1">
-                                    <span className="badge-accent">
-                                        {img.category}
-                                    </span>
-                                    <p
-                                        style={{color: "var(--text-secondary)"}}
-                                        className="text-xs leading-snug mt-1"
-                                    >
-                                        {img.caption}
-                                    </p>
-                                </div>
                             </button>
                         ))}
                     </div>

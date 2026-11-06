@@ -2,6 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {NavLink, useLocation} from "react-router-dom";
+import {motion} from "framer-motion";
 import {
     Briefcase,
     Download,
@@ -330,8 +331,61 @@ export function AppShell({children}: { children: React.ReactNode }) {
                 </div>
             )}
 
-            <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8">
-                {children}
+            {/* Floating Right-Edge Quick-Dot Navigator (Inspired by original FixedNav) */}
+            <aside
+                aria-label="Quick section dots"
+                data-testid="floating-dot-nav"
+                className="hidden xl:flex fixed right-3 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-2 p-1.5 rounded-full surface-glass no-print"
+            >
+                {(!isPersonalRealm ? PROFESSIONAL_NAV_ITEMS : PERSONAL_NAV_ITEMS).map(
+                    (item) => {
+                        const isItemActive = !isPersonalRealm
+                            ? item.path === "/"
+                                ? location.pathname === "/"
+                                : location.pathname.startsWith(item.path)
+                            : activeTab === (item.path.split("tab=")[1] ?? "lifestyle");
+                        return (
+                            <NavLink
+                                key={item.path}
+                                to={item.path}
+                                title={item.label}
+                                aria-label={`Jump to ${item.label}`}
+                                className="group relative flex items-center justify-center w-6 h-6 rounded-full transition-transform hover:scale-110"
+                            >
+                                <span
+                                    style={{
+                                        backgroundColor: isItemActive
+                                            ? "var(--accent-primary)"
+                                            : "var(--border-strong)",
+                                        transform: isItemActive ? "scale(1.25)" : "scale(1)",
+                                    }}
+                                    className="w-2 h-2 rounded-full transition-all"
+                                />
+                                <span
+                                    style={{
+                                        backgroundColor: "var(--bg-elevated)",
+                                        color: "var(--text-primary)",
+                                        borderColor: "var(--border-subtle)",
+                                    }}
+                                    className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity absolute right-8 px-2 py-1 rounded-md text-[11px] font-medium border whitespace-nowrap shadow-sm"
+                                >
+                                    {item.shortLabel}
+                                </span>
+                            </NavLink>
+                        );
+                    }
+                )}
+            </aside>
+
+            <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-5 overflow-x-hidden">
+                <motion.div
+                    key={location.pathname}
+                    initial={{opacity: 0, y: 16, scale: 0.992}}
+                    animate={{opacity: 1, y: 0, scale: 1}}
+                    transition={{type: "spring", stiffness: 260, damping: 24}}
+                >
+                    {children}
+                </motion.div>
             </main>
 
             <footer
@@ -339,7 +393,7 @@ export function AppShell({children}: { children: React.ReactNode }) {
                     borderColor: "var(--border-subtle)",
                     color: "var(--text-muted)",
                 }}
-                className="border-t py-5 px-4 sm:px-6 text-xs no-print"
+                className="border-t py-3.5 px-4 sm:px-6 text-xs no-print"
             >
                 <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-4">
                     <span>
