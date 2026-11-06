@@ -5,21 +5,23 @@ import {motion} from "framer-motion";
 
 type SectionStyle = {
     titleColor: string;
-    background: string;
+    badgeBorder: string;
 };
 
 const personalStyle: SectionStyle = {
     titleColor: "text-pink-300",
-    background: "bg-gradient-to-b from-purple-800 to-fuchsia-900"
+    badgeBorder: "from-pink-400/50 via-pink-300/20 to-transparent",
 };
+
 const professionalStyle: SectionStyle = {
-    titleColor: "text-orange-300",
-    background: "bg-gradient-to-b from-cyan-800 to-blue-900"
+    titleColor: "text-amber-300",
+    badgeBorder: "from-amber-400/50 via-amber-300/20 to-transparent",
 };
+
 const sections = {
     personal: personalStyle,
     professional: professionalStyle,
-}
+};
 
 type SectionKey = keyof typeof sections;
 
@@ -32,85 +34,87 @@ type SectionProps = {
     type: SectionKey;
 };
 
-
 function Section({id, title, subtitle, children, className, type}: SectionProps) {
     const style = sections[type];
     return (
-        <section id={id} role="region" aria-labelledby={`${id}-title`} className="min-h-screen snap-start">
-            <div
-                className={clsx(className, style?.background || "bg-gray-800", "w-full py-16 px-6 text-white text-center")}>
-                <SectionTitle id={id} title={title}
-                              subtitle={subtitle} className={style?.titleColor || "text-white"}/>
+        <section
+            id={id}
+            role="region"
+            aria-labelledby={`${id}-title`}
+            className={clsx(
+                className,
+                "min-h-screen snap-start flex flex-col justify-center w-full py-12 md:py-16 pl-5 pr-14 sm:px-10 md:pr-20 text-white text-center relative"
+            )}
+        >
+            <div className="w-full max-w-5xl mx-auto">
+                <SectionTitle
+                    id={`${id}-title`}
+                    title={title}
+                    subtitle={subtitle}
+                    className={style?.titleColor || "text-white"}
+                />
                 <motion.div
-                    initial={{opacity: 0, y: 40}}
+                    initial={{opacity: 0, y: 28}}
                     whileInView={{opacity: 1, y: 0}}
                     viewport={{once: true}}
-                    transition={{type: "spring", stiffness: 60, damping: 12}}
-                    className="max-w-3xl mx-auto space-y-8"
+                    transition={{type: "spring", stiffness: 60, damping: 14}}
+                    className="w-full mx-auto space-y-6"
                 >
                     {children}
                 </motion.div>
             </div>
         </section>
-    )
+    );
 }
-
 
 type MainTitleProps = {
     id: string;
     title: string;
     subtitle?: string;
     className?: string;
-}
+};
 
-function SectionTitle({id, title, subtitle, className}: MainTitleProps,) {
+function SectionTitle({id, title, subtitle, className}: MainTitleProps) {
     return (
-        <h2 id={id} className={clsx(className, "text-4xl md:text-5xl font-light text-center mb-12")}>
-            <motion.span
-                initial={{scale: 1, opacity: 0, x: "-100%"}}
-                whileHover={{scale: 1.1}}
-                whileInView={{scale: 1, opacity: 1, x: 0}}
-                transition={{type: "spring", stiffness: 60, damping: 12, delay: 0.3}}
-                className="font-semibold"
+        <div className="mb-6 md:mb-7 text-center">
+            <h2
+                id={id}
+                className={clsx(
+                    className,
+                    "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight"
+                )}
             >
                 {title}
-            </motion.span>
+            </h2>
             {subtitle && (
-                <>
-                    <br/>
-                    <motion.span
-                        initial={{opacity: 0}}
-                        whileInView={{opacity: 1}}
-                        transition={{type: "spring", stiffness: 60, damping: 12, delay: 0.5}}
-                        className="text-white text-3xl md:text-4xl"
-                    >
-                        {subtitle}
-                    </motion.span>
-                </>
+                <p className="mt-1.5 text-white/80 text-lg sm:text-xl md:text-2xl font-light tracking-wide">
+                    {subtitle}
+                </p>
             )}
-        </h2>
-    )
-        ;
+            <div className="mt-3 mx-auto h-0.5 w-16 rounded-full bg-white/25"/>
+        </div>
+    );
 }
 
 type SectionSubtitleProps = {
     text: string;
     className?: string;
-}
+};
 
-function SectionSubtitle({text, className}: SectionSubtitleProps,) {
+function SectionSubtitle({text, className}: SectionSubtitleProps) {
     return (
         <motion.div
-            initial={{opacity: 0, x: -40}}
-            whileInView={{opacity: 1, x: 0}}
+            initial={{opacity: 0, y: 12}}
+            whileInView={{opacity: 1, y: 0}}
             viewport={{once: true}}
-            transition={{type: "spring", stiffness: 60, damping: 12}}
-            className="text-center mb-12"
+            transition={{type: "spring", stiffness: 60, damping: 14}}
+            className="text-center pt-4 pb-2"
         >
-            <h2 className={clsx(className, "text-3xl font-bold")}>{text}</h2>
+            <h3 className={clsx(className, "text-xl sm:text-2xl font-semibold tracking-tight text-white")}>
+                {text}
+            </h3>
         </motion.div>
     );
 }
 
-
-export {Section, SectionTitle, SectionSubtitle}
+export {Section, SectionTitle, SectionSubtitle};

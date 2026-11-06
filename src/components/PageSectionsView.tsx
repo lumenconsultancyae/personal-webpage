@@ -3,7 +3,7 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {motion} from "framer-motion";
 import {useRouter} from "next/navigation";
-import {Home} from "lucide-react";
+import {Briefcase, Home, User} from "lucide-react";
 import ProfessionalHighlights from "@/components/ProfessionalHighlights";
 import Journey from "@/components/Journey";
 import Testimonials from "@/components/Testimonials";
@@ -93,15 +93,20 @@ export const personalSections: SectionItem[] = [
 ];
 
 type FixedNavProps = {
+    type: "professional" | "personal";
     sections: SectionItem[];
     onNavigateAction: (sectionId: string) => void;
+    onSwitchModeAction: () => void;
 };
 
-export function FixedNav({sections, onNavigateAction}: FixedNavProps) {
+export function FixedNav({
+    type,
+    sections,
+    onNavigateAction,
+    onSwitchModeAction,
+}: FixedNavProps) {
     const [activeId, setActiveId] = useState(sections[0]?.id || "");
     const [hoveredId, setHoveredId] = useState("");
-    const [scrolling, setScrolling] = useState(false);
-    const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -131,34 +136,28 @@ export function FixedNav({sections, onNavigateAction}: FixedNavProps) {
         };
     }, [sections]);
 
-    useEffect(() => {
-        setScrolling(true);
-        if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-        scrollTimeout.current = setTimeout(() => {
-            setScrolling(false);
-        }, 2000);
-
-        return () => {
-            if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
-        };
-    }, [activeId]);
+    const accentDotClass =
+        type === "professional"
+            ? "bg-amber-300 shadow-[0_0_10px_rgba(251,191,36,0.7)]"
+            : "bg-pink-300 shadow-[0_0_10px_rgba(244,114,182,0.7)]";
 
     return (
         <motion.nav
             role="navigation"
             aria-label="Section navigation"
-            className="bg-black/60 backdrop-blur-md rounded-l-full pt-5 pb-8 pl-3 flex flex-col items-center gap-4"
+            className="bg-slate-950/65 border border-white/15 backdrop-blur-lg rounded-l-2xl py-4 pl-2.5 pr-2 flex flex-col items-center gap-3.5 shadow-2xl"
             transition={{type: "spring", stiffness: 200, damping: 20}}
-            whileHover={{scale: 1.1}}
         >
             <button
                 onClick={() => onNavigateAction("")}
-                className="pr-2 text-white hover:scale-125 transition"
-                aria-label="Home"
+                className="p-1.5 rounded-lg text-white/85 hover:text-white hover:bg-white/10 transition"
+                aria-label="Back to Home"
                 title="Back to Home"
             >
-                <Home className="w-5 h-5"/>
+                <Home className="w-4 h-4"/>
             </button>
+
+            <div className="w-5 h-px bg-white/15"/>
 
             {sections.map((section) => {
                 const isActive = section.id === activeId;
@@ -170,32 +169,51 @@ export function FixedNav({sections, onNavigateAction}: FixedNavProps) {
                         onClick={() => onNavigateAction(section.id)}
                         onMouseEnter={() => setHoveredId(section.id)}
                         onMouseLeave={() => setHoveredId("")}
-                        className="group relative flex items-center pr-3 focus:outline-none"
+                        aria-label={section.label}
+                        className="group relative flex items-center justify-center p-1 focus:outline-none"
                     >
                         <motion.span
                             layout
-                            className={`rounded-full transition-colors duration-300 ${
+                            className={`rounded-full transition-all duration-300 ${
                                 isActive
-                                    ? "w-3.5 h-3.5 bg-white"
-                                    : "w-2.5 h-2.5 bg-gray-400 opacity-50 group-hover:opacity-80"
+                                    ? `w-3 h-3 ${accentDotClass}`
+                                    : "w-2 h-2 bg-white/40 group-hover:bg-white/80"
                             }`}
-                            animate={{scale: isActive ? 1.3 : 1}}
+                            animate={{scale: isActive ? 1.2 : 1}}
                             transition={{type: "spring", stiffness: 300, damping: 20}}
                         />
 
-                        <motion.span
-                            initial={{opacity: 0, x: 10}}
-                            animate={{opacity: 1, x: 0}}
-                            exit={{opacity: 0, x: 10}}
-                            className={`${
-                                hovered || (scrolling && isActive) ? "visible" : "hidden"
-                            } absolute right-10 text-sm text-white whitespace-nowrap bg-black/70 px-2 py-0.5 rounded`}
-                        >
-                            {section.label}
-                        </motion.span>
+                        {hovered && (
+                            <span className="pointer-events-none absolute right-9 text-xs font-medium text-white whitespace-nowrap bg-slate-950/90 border border-white/15 px-2.5 py-1 rounded-md shadow-lg">
+                                {section.label}
+                            </span>
+                        )}
                     </button>
                 );
             })}
+
+            <div className="w-5 h-px bg-white/15"/>
+
+            <button
+                onClick={onSwitchModeAction}
+                className="p-1.5 rounded-lg text-white/75 hover:text-white hover:bg-white/10 transition"
+                aria-label={
+                    type === "professional"
+                        ? "Switch to Personal page"
+                        : "Switch to Professional page"
+                }
+                title={
+                    type === "professional"
+                        ? "Switch to Personal page"
+                        : "Switch to Professional page"
+                }
+            >
+                {type === "professional" ? (
+                    <User className="w-4 h-4 text-pink-300"/>
+                ) : (
+                    <Briefcase className="w-4 h-4 text-amber-300"/>
+                )}
+            </button>
         </motion.nav>
     );
 }
@@ -207,6 +225,7 @@ type PageSectionsViewProps = {
 
 export default function PageSectionsView({type, sections}: PageSectionsViewProps) {
     const router = useRouter();
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const scrollToSection = useCallback((sectionId: string) => {
         const el = document.getElementById(sectionId);
@@ -239,26 +258,43 @@ export default function PageSectionsView({type, sections}: PageSectionsViewProps
         [router, scrollToSection]
     );
 
+    const handleSwitchMode = useCallback(() => {
+        router.push(type === "professional" ? "/personal" : "/professional");
+    }, [router, type]);
+
     return (
-        <main className="text-white font-sans">
+        <main
+            className={`text-white font-sans ${
+                type === "professional"
+                    ? "bg-professional-canvas"
+                    : "bg-personal-canvas"
+            }`}
+        >
             <motion.div
                 key="fixed-nav"
-                initial={{x: 100, opacity: 0}}
+                initial={{x: 80, opacity: 0}}
                 animate={{x: 0, opacity: 1}}
-                transition={{type: "spring", stiffness: 300, damping: 20}}
+                transition={{type: "spring", stiffness: 260, damping: 22}}
                 className="fixed right-0 top-1/2 -translate-y-1/2 z-50"
             >
-                <FixedNav sections={sections} onNavigateAction={handleNavigate}/>
+                <FixedNav
+                    type={type}
+                    sections={sections}
+                    onNavigateAction={handleNavigate}
+                    onSwitchModeAction={handleSwitchMode}
+                />
             </motion.div>
 
-            <div className="h-screen snap-y snap-mandatory overflow-x-hidden scroll-smooth scrollbar-hide">
+            <div
+                ref={containerRef}
+                className="h-screen snap-y snap-mandatory overflow-y-auto overflow-x-hidden scroll-smooth scrollbar-hide"
+            >
                 {sections.map((section) => (
                     <Section
                         id={section.id}
                         key={section.id}
                         title={section.title}
                         subtitle={section.subtitle}
-                        className="min-h-screen snap-start"
                         type={type}
                     >
                         {section.component}

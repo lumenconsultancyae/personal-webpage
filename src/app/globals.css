@@ -1,16 +1,73 @@
 @import "tailwindcss";
 
+:root {
+    --pro-bg-start: #072235;
+    --pro-bg-mid: #0b3552;
+    --pro-bg-end: #0c1f47;
+    --pro-accent: #fbbf24;
+    --pro-accent-soft: rgba(251, 191, 36, 0.16);
+
+    --pers-bg-start: #2e104b;
+    --pers-bg-mid: #4c186e;
+    --pers-bg-end: #38124a;
+    --pers-accent: #f472b6;
+    --pers-accent-soft: rgba(244, 114, 182, 0.16);
+
+    --glass-surface: rgba(255, 255, 255, 0.08);
+    --glass-surface-hover: rgba(255, 255, 255, 0.13);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-border-strong: rgba(255, 255, 255, 0.26);
+}
+
 html,
 body {
     height: 100%;
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-professional-canvas {
+    background:
+        radial-gradient(circle at 18% 18%, rgba(34, 211, 238, 0.18), transparent 45%),
+        radial-gradient(circle at 82% 78%, rgba(251, 191, 36, 0.1), transparent 45%),
+        linear-gradient(160deg, var(--pro-bg-start) 0%, var(--pro-bg-mid) 50%, var(--pro-bg-end) 100%);
+}
+
+.bg-personal-canvas {
+    background:
+        radial-gradient(circle at 20% 20%, rgba(244, 114, 182, 0.2), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.18), transparent 45%),
+        linear-gradient(160deg, var(--pers-bg-start) 0%, var(--pers-bg-mid) 50%, var(--pers-bg-end) 100%);
+}
+
+.glass-card {
+    background: var(--glass-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.32);
+}
+
+.glass-card-interactive {
+    background: var(--glass-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.32);
+    transition: transform 200ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+.glass-card-interactive:hover {
+    background: var(--glass-surface-hover);
+    border-color: var(--glass-border-strong);
 }
 
 .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+    display: none;
 }

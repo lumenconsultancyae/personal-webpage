@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {motion} from "framer-motion";
-import {FiExternalLink} from "react-icons/fi";
+import {ExternalLink} from "lucide-react";
 import Link from "next/link";
 
 type Project = {
@@ -87,30 +87,30 @@ export default function Projects() {
     const allProjects = [...spotlightProjects, ...remoteProjects];
 
     return (
-        <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3 text-left">
+        <div className="max-w-5xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left">
             {/* Current portfolio site */}
             <motion.div
-                className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col justify-between border border-orange-300/30"
-                initial={{opacity: 0, scale: 0.95}}
+                className="glass-card-interactive p-6 rounded-2xl flex flex-col justify-between border-t-2 border-t-amber-300/70"
+                initial={{opacity: 0, scale: 0.96}}
                 whileInView={{opacity: 1, scale: 1}}
                 viewport={{once: true}}
-                transition={{type: "spring", stiffness: 60, damping: 12}}
+                transition={{type: "spring", stiffness: 60, damping: 14}}
             >
                 <div>
-                    <h3 className="text-xl font-semibold mb-2 text-orange-300">
+                    <h3 className="text-lg font-semibold mb-2 text-amber-300">
                         This Portfolio
                     </h3>
                     <p className="text-white/80 mb-4 text-sm leading-relaxed">
                         Built with Next.js 15, React 19, TypeScript, Tailwind CSS v4,
-                        Framer Motion &amp; MUI—designed to showcase my career journey,
-                        architecture philosophy, testimonials, and projects.
+                        and Framer Motion—designed with a clean, low-density separation
+                        between my professional work and personal world.
                     </p>
-                    <div className="flex flex-wrap gap-1.5 mb-4">
+                    <div className="flex flex-wrap gap-1.5 mb-5">
                         {["Next.js 15", "React 19", "TypeScript", "Tailwind CSS"].map(
                             (tag) => (
                                 <span
                                     key={tag}
-                                    className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-orange-200"
+                                    className="text-xs px-2.5 py-0.5 rounded-full bg-amber-300/15 border border-amber-300/30 text-amber-200 font-medium"
                                 >
                                     {tag}
                                 </span>
@@ -118,20 +118,20 @@ export default function Projects() {
                         )}
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 pt-2 border-t border-white/10">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-1 text-orange-300 hover:underline text-sm font-medium"
+                        className="inline-flex items-center gap-1.5 text-amber-300 hover:underline text-xs font-semibold"
                     >
-                        View live <FiExternalLink/>
+                        View live <ExternalLink className="w-3.5 h-3.5"/>
                     </Link>
                     <a
                         href="https://github.com/lumenconsultancyae/personal-webpage"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-white/80 hover:text-orange-300 hover:underline text-sm"
+                        className="inline-flex items-center gap-1.5 text-white/75 hover:text-amber-300 hover:underline text-xs font-medium"
                     >
-                        GitHub <FiExternalLink/>
+                        GitHub <ExternalLink className="w-3.5 h-3.5"/>
                     </a>
                 </div>
             </motion.div>
@@ -140,23 +140,26 @@ export default function Projects() {
             {allProjects.map((p) => (
                 <motion.div
                     key={p.id}
-                    className="bg-white/10 backdrop-blur-md p-6 rounded-2xl shadow-lg flex flex-col justify-between"
-                    initial={{opacity: 0, scale: 0.95}}
+                    className="glass-card-interactive p-6 rounded-2xl flex flex-col justify-between"
+                    initial={{opacity: 0, scale: 0.96}}
                     whileInView={{opacity: 1, scale: 1}}
                     viewport={{once: true}}
-                    transition={{type: "spring", stiffness: 60, damping: 12}}
+                    transition={{type: "spring", stiffness: 60, damping: 14}}
                 >
                     <div>
-                        <h3 className="text-xl font-semibold mb-2">{p.name}</h3>
+                        <h3 className="text-lg font-semibold mb-2 text-white">
+                            {p.name}
+                        </h3>
                         <p className="text-white/80 mb-4 text-sm leading-relaxed">
-                            {p.description || "Open-source engineering project hosted on GitLab."}
+                            {p.description ||
+                                "Open-source engineering project hosted on GitLab."}
                         </p>
                         {p.tags && (
-                            <div className="flex flex-wrap gap-1.5 mb-4">
+                            <div className="flex flex-wrap gap-1.5 mb-5">
                                 {p.tags.map((tag) => (
                                     <span
                                         key={tag}
-                                        className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-orange-200"
+                                        className="text-xs px-2.5 py-0.5 rounded-full bg-white/10 border border-white/15 text-amber-200 font-medium"
                                     >
                                         {tag}
                                     </span>
@@ -164,23 +167,23 @@ export default function Projects() {
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 pt-2 border-t border-white/10">
                         <a
                             href={p.web_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-orange-300 hover:underline text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 text-amber-300 hover:underline text-xs font-semibold"
                         >
-                            View Project <FiExternalLink/>
+                            View Project <ExternalLink className="w-3.5 h-3.5"/>
                         </a>
                         {p.homepage && (
                             <a
                                 href={p.homepage}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1 text-white/80 hover:text-orange-300 hover:underline text-sm"
+                                className="inline-flex items-center gap-1.5 text-white/75 hover:text-amber-300 hover:underline text-xs font-medium"
                             >
-                                Backend Repo <FiExternalLink/>
+                                Backend Repo <ExternalLink className="w-3.5 h-3.5"/>
                             </a>
                         )}
                     </div>
