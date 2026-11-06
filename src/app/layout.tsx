@@ -2,8 +2,9 @@ import type {Metadata} from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Wilsonr990",
-    description: "Wilson Guevara — Professional Portfolio & Personal Page",
+    title: "Wilson Guevara (@wilsonr990) — Staff Software & Data Engineer",
+    description:
+        "Executive portfolio, systems architecture, career journey, and open-source projects of Wilson Guevara.",
     icons: {
         icon: "/favicon.svg",
     },
@@ -11,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <body className="antialiased bg-blue-900">{children}</body>
+        <html lang="en" data-theme="dark" dir="ltr">
+            <body className="antialiased font-sans">{children}</body>
         </html>
     );
 }
