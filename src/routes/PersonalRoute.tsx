@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import type {GalleryItem} from "@/domain/models";
 import {useProfileOverviewQuery} from "@/application/usePortfolioQueries";
+import {PERSONAL_BLOG_POSTS} from "@/infrastructure/blogPosts";
+import {BlogFeedSection} from "@/components/ui/BlogFeedSection";
 import {RouteSkeleton} from "@/components/ui/ErrorBoundary";
 
 const LIFESTYLE_ICONS = {
@@ -31,9 +33,9 @@ const LIFESTYLE_IMAGES: Record<string, string> = {
     "life-boardgames": "/gallery/group.jpg",
     "life-languages": "/gallery/dev-workspace.png",
     "life-travel": "/gallery/colombia-cocora.png",
-    "life-music": "/gallery/coffee-lab.png",
-    "life-learning": "/gallery/group3.jpg",
-    "life-movies": "/gallery/group4.jpg",
+    "life-music": "/gallery/music-vinyl.png",
+    "life-learning": "/gallery/coffee-lab.png",
+    "life-movies": "/gallery/movies-cinema.png",
 };
 
 const TRAVEL_IMAGES: Record<string, string> = {
@@ -70,13 +72,13 @@ export default function PersonalRoute() {
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                        Beyond the Keyboard — Life, Travel &amp; Gallery
+                        Beyond the Keyboard — Personal Blog &amp; Curated Favorites
                     </h1>
                     <p
                         style={{color: "var(--text-secondary)"}}
                         className="text-sm mt-1"
                     >
-                        Fatherhood, board-game design (@bgameplan), specialty coffee, global chapters, and engineering philosophy
+                        Blogs on my favorite board games (@bgameplan), favorite movies, favorite music, fatherhood, and global chapters
                     </p>
                 </div>
 
@@ -117,6 +119,16 @@ export default function PersonalRoute() {
                     })}
                 </div>
             </div>
+
+            {/* Personal Blog Posts: Board Games, Favorite Movies, Favorite Music, Fatherhood & Coffee */}
+            {showSection("lifestyle") && (
+                <BlogFeedSection
+                    heading="Personal Blog: Board Games, Movies, Music & Life"
+                    subheading="Stories and curated lists on tabletop game design (@bgameplan), mind-bending cinema, coding soundtracks, and specialty coffee"
+                    posts={PERSONAL_BLOG_POSTS}
+                    testIdPrefix="personal"
+                />
+            )}
 
             {/* Lifestyle Grid */}
             {showSection("lifestyle") && (

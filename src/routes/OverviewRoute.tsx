@@ -13,6 +13,8 @@ import {
     Sparkles,
 } from "lucide-react";
 import {useProfileOverviewQuery} from "@/application/usePortfolioQueries";
+import {PROFESSIONAL_BLOG_POSTS} from "@/infrastructure/blogPosts";
+import {BlogFeedSection} from "@/components/ui/BlogFeedSection";
 import {RouteSkeleton} from "@/components/ui/ErrorBoundary";
 
 function useTypewriter(words: string[]) {
@@ -62,8 +64,8 @@ export default function OverviewRoute() {
     }
 
     return (
-        <div data-testid="overview-route" className="space-y-8">
-            {/* Splash Hero with Typewriter & Backspace Animation + Avatar */}
+        <div data-testid="overview-route" className="space-y-10">
+            {/* Hero with Typewriter & Backspace Animation, CV Download & LinkedIn Links */}
             <section
                 aria-labelledby="hero-heading"
                 className="surface-card p-6 sm:p-10 relative overflow-hidden"
@@ -72,7 +74,7 @@ export default function OverviewRoute() {
                     <div className="lg:col-span-8 space-y-5">
                         <div className="inline-flex items-center gap-2 badge-accent">
                             <Briefcase className="w-3.5 h-3.5" aria-hidden="true"/>
-                            <span>Staff Software &amp; Data Engineer</span>
+                            <span>Staff Software &amp; Data Engineer · Engineering Blog &amp; CV</span>
                         </div>
 
                         <h1
@@ -110,19 +112,49 @@ export default function OverviewRoute() {
                             style={{color: "var(--text-secondary)"}}
                             className="text-base sm:text-lg max-w-2xl leading-relaxed"
                         >
-                            {profile.pitch}
+                            {profile.pitch} Welcome to my professional engineering blog &amp; interactive CV—where I share architecture stories, production case studies, and open-source projects.
                         </p>
 
-                        {/* Primary Separation Choice: Professional Portfolio vs. Personal World */}
-                        <div className="flex flex-wrap items-center gap-3 pt-1">
+                        {/* Primary Actions: CV, LinkedIn, GitLab, Projects, Personal Blog */}
+                        <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                            <a
+                                href="/FinalResume.pdf"
+                                download
+                                data-testid="hero-cta-cv"
+                                className="btn-primary inline-flex items-center gap-2 text-sm"
+                            >
+                                <Download className="w-4 h-4" aria-hidden="true"/>
+                                Download CV (PDF)
+                            </a>
+
+                            <a
+                                href="https://www.linkedin.com/in/wilsonr990/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-testid="hero-cta-linkedin"
+                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                            >
+                                <span>LinkedIn Profile</span>
+                                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                            </a>
+
+                            <a
+                                href="https://gitlab.com/wilsonr990"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn-secondary inline-flex items-center gap-2 text-sm"
+                            >
+                                <span>GitLab</span>
+                                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                            </a>
+
                             <Link
                                 to="/projects"
                                 data-testid="hero-cta-projects"
-                                className="btn-primary inline-flex items-center gap-2 text-sm"
+                                className="btn-secondary inline-flex items-center gap-2 text-sm"
                             >
                                 <Briefcase className="w-4 h-4" aria-hidden="true"/>
-                                Professional Projects
-                                <ArrowRight className="w-4 h-4" aria-hidden="true"/>
+                                Projects Catalog
                             </Link>
 
                             <Link
@@ -130,7 +162,7 @@ export default function OverviewRoute() {
                                 data-testid="hero-cta-journey"
                                 className="btn-secondary inline-flex items-center gap-2 text-sm"
                             >
-                                Career Journey
+                                Full CV Timeline
                             </Link>
 
                             <Link
@@ -143,18 +175,9 @@ export default function OverviewRoute() {
                                     className="w-4 h-4"
                                     aria-hidden="true"
                                 />
-                                Personal World
+                                Personal Blog (Board Games, Movies &amp; Music)
+                                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true"/>
                             </Link>
-
-                            <a
-                                href="/FinalResume.pdf"
-                                download
-                                data-testid="hero-cta-cv"
-                                className="btn-secondary inline-flex items-center gap-2 text-sm"
-                            >
-                                <Download className="w-4 h-4" aria-hidden="true"/>
-                                Download CV
-                            </a>
                         </div>
 
                         {/* Compact Executive KPI Strip */}
@@ -211,173 +234,123 @@ export default function OverviewRoute() {
                 </div>
             </section>
 
-            {/* Visual World Cards: Professional Engineering vs. Personal Life & Community */}
+            {/* Professional Engineering & Experience Blog Feed */}
+            <BlogFeedSection
+                heading="Engineering Blog, Experience & Architecture Stories"
+                subheading="Read about my experience across AI/MLOps in Dubai, fintech microservices in Singapore, EdTech at Guinness World Record scale, and open-source compilers"
+                posts={PROFESSIONAL_BLOG_POSTS}
+                testIdPrefix="professional"
+            />
+
+            {/* CV Summary & Direct Contact */}
             <section
-                aria-label="Explore Professional and Personal Worlds"
-                className="grid gap-6 lg:grid-cols-2"
+                aria-labelledby="competencies-heading"
+                className="grid gap-6 lg:grid-cols-12"
             >
-                <article className="surface-card overflow-hidden flex flex-col justify-between">
-                    <div className="grid sm:grid-cols-3 gap-1 p-1.5 pb-0">
-                        <img
-                            src="/gallery/dev-workspace.png"
-                            alt="Engineering & architecture workspace"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
-                        <img
-                            src="/gallery/dubai-chapter.png"
-                            alt="Dubai technology chapter"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
-                        <img
-                            src="/gallery/singapore-skyline.png"
-                            alt="Singapore fintech chapter"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
+                <div className="lg:col-span-7 surface-card p-6 space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                        <h2 id="competencies-heading" className="text-lg font-semibold">
+                            CV Executive Summary &amp; Core Competencies
+                        </h2>
+                        <a
+                            href="/FinalResume.pdf"
+                            download
+                            className="btn-secondary text-xs py-1 px-2.5 inline-flex items-center gap-1.5"
+                        >
+                            <Download className="w-3.5 h-3.5" aria-hidden="true"/>
+                            Download PDF Resume
+                        </a>
                     </div>
-                    <div className="p-6 space-y-4">
-                        <div className="flex items-center justify-between gap-2">
-                            <span className="badge-accent inline-flex items-center gap-1.5">
-                                <Briefcase className="w-3.5 h-3.5" aria-hidden="true"/>
-                                Professional Portfolio
-                            </span>
-                            <span
-                                style={{color: "var(--text-muted)"}}
-                                className="text-xs"
+                    <p
+                        style={{color: "var(--text-secondary)"}}
+                        className="text-sm leading-relaxed"
+                    >
+                        {profile.summaryParagraphs[0]}{" "}
+                        {profile.summaryParagraphs[1]}
+                    </p>
+                    <ul className="grid gap-2.5 sm:grid-cols-2 pt-1">
+                        {profile.coreCompetencies.map((item) => (
+                            <li
+                                key={item}
+                                className="surface-elevated px-3.5 py-2.5 flex items-center gap-2.5 text-sm"
                             >
-                                Colombia · Singapore · UAE
-                            </span>
-                        </div>
-                        <h2 id="competencies-heading" className="text-xl font-semibold">
-                            Professional Highlights &amp; Systems Architecture
+                                <CheckCircle2
+                                    style={{color: "var(--accent-secondary)"}}
+                                    className="w-4 h-4 shrink-0"
+                                    aria-hidden="true"
+                                />
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className="lg:col-span-5 surface-card p-6 flex flex-col justify-between space-y-4">
+                    <div className="space-y-2">
+                        <h2 className="text-lg font-semibold">
+                            Connect on LinkedIn or Direct Contact
                         </h2>
                         <p
                             style={{color: "var(--text-secondary)"}}
                             className="text-sm leading-relaxed"
                         >
-                            {profile.summaryParagraphs[0]}
+                            Whether you want to collaborate on distributed systems, discuss AI/MLOps architecture, or just say hi — my inbox and LinkedIn are always open.
                         </p>
-                        <ul className="grid gap-2 sm:grid-cols-2">
-                            {profile.coreCompetencies.map((item) => (
-                                <li
-                                    key={item}
-                                    className="surface-elevated px-3 py-2 flex items-center gap-2 text-xs font-medium"
-                                >
-                                    <CheckCircle2
-                                        style={{color: "var(--accent-secondary)"}}
-                                        className="w-3.5 h-3.5 shrink-0"
-                                        aria-hidden="true"
-                                    />
-                                    <span>{item}</span>
-                                </li>
-                            ))}
-                        </ul>
-                        <div className="flex flex-wrap gap-2.5 pt-1">
-                            <Link
-                                to="/projects"
-                                className="btn-primary text-xs inline-flex items-center gap-1.5"
-                            >
-                                Explore Projects
-                                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true"/>
-                            </Link>
-                            <Link
-                                to="/testimonials"
-                                className="btn-secondary text-xs inline-flex items-center gap-1.5"
-                            >
-                                Peer Testimonials &amp; Stack
-                            </Link>
-                        </div>
                     </div>
-                </article>
 
-                <article className="surface-card overflow-hidden flex flex-col justify-between">
-                    <div className="grid grid-cols-3 gap-1 p-1.5 pb-0">
-                        <img
-                            src="/gallery/group.jpg"
-                            alt="Hosting board game night with friends in Dubai"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
-                        <img
-                            src="/gallery/family-moment.png"
-                            alt="Fatherhood and family moments"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
-                        <img
-                            src="/gallery/colombia-cocora.png"
-                            alt="Colombia Cocora Valley mountains"
-                            className="w-full h-36 object-cover rounded-lg"
-                        />
-                    </div>
-                    <div className="p-6 space-y-4">
-                        <div className="flex items-center justify-between gap-2">
-                            <span className="badge-secondary inline-flex items-center gap-1.5">
-                                <Sparkles className="w-3.5 h-3.5" aria-hidden="true"/>
-                                Beyond the Keyboard
-                            </span>
-                            <span
-                                style={{color: "var(--text-muted)"}}
-                                className="text-xs"
-                            >
-                                Fatherhood · @bgameplan · Coffee Lab
-                            </span>
-                        </div>
-                        <h2 className="text-xl font-semibold">
-                            Personal World, Travel &amp; Let&apos;s Connect
-                        </h2>
-                        <p
-                            style={{color: "var(--text-secondary)"}}
-                            className="text-sm leading-relaxed"
+                    <div className="space-y-2">
+                        <a
+                            href="https://www.linkedin.com/in/wilsonr990/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm hover:opacity-90 transition"
                         >
-                            Life is more than semicolons and sprints. Outside of work I host weekly board-game nights in Dubai (@bgameplan), explore specialty coffee, travel with family, and design custom tabletop games.
-                        </p>
-                        <div className="grid gap-2 sm:grid-cols-2">
-                            <a
-                                href="mailto:wilsonr100@gmail.com"
-                                className="surface-elevated px-3.5 py-2.5 flex items-center justify-between text-xs hover:opacity-90 transition"
-                            >
-                                <span className="inline-flex items-center gap-2">
-                                    <Mail
-                                        style={{color: "var(--accent-primary)"}}
-                                        className="w-3.5 h-3.5"
-                                        aria-hidden="true"
-                                    />
-                                    <span>wilsonr100@gmail.com</span>
-                                </span>
-                                <ExternalLink className="w-3 h-3" aria-hidden="true"/>
-                            </a>
+                            <span className="font-medium">
+                                linkedin.com/in/wilsonr990
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                        </a>
 
-                            <a
-                                href="tel:+971565712642"
-                                className="surface-elevated px-3.5 py-2.5 flex items-center justify-between text-xs tabular-nums hover:opacity-90 transition"
-                            >
-                                <span className="inline-flex items-center gap-2">
-                                    <Phone
-                                        style={{color: "var(--accent-secondary)"}}
-                                        className="w-3.5 h-3.5"
-                                        aria-hidden="true"
-                                    />
-                                    <span>+971 565712642</span>
-                                </span>
-                                <ExternalLink className="w-3 h-3" aria-hidden="true"/>
-                            </a>
-                        </div>
-                        <div className="flex flex-wrap gap-2.5 pt-1">
-                            <Link
-                                to="/personal"
-                                className="btn-primary text-xs inline-flex items-center gap-1.5"
-                            >
-                                Visit Personal Page
-                                <ArrowRight className="w-3.5 h-3.5" aria-hidden="true"/>
-                            </Link>
-                            <Link
-                                to="/contact"
-                                data-testid="overview-contact-link"
-                                className="btn-secondary text-xs inline-flex items-center gap-1.5"
-                            >
-                                Send a Direct Message
-                            </Link>
-                        </div>
+                        <a
+                            href="mailto:wilsonr100@gmail.com"
+                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm hover:opacity-90 transition"
+                        >
+                            <span className="inline-flex items-center gap-2.5">
+                                <Mail
+                                    style={{color: "var(--accent-primary)"}}
+                                    className="w-4 h-4"
+                                    aria-hidden="true"
+                                />
+                                <span>wilsonr100@gmail.com</span>
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                        </a>
+
+                        <a
+                            href="tel:+971565712642"
+                            className="surface-elevated px-4 py-2.5 flex items-center justify-between text-sm tabular-nums hover:opacity-90 transition"
+                        >
+                            <span className="inline-flex items-center gap-2.5">
+                                <Phone
+                                    style={{color: "var(--accent-secondary)"}}
+                                    className="w-4 h-4"
+                                    aria-hidden="true"
+                                />
+                                <span>+971 565712642</span>
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5" aria-hidden="true"/>
+                        </a>
                     </div>
-                </article>
+
+                    <Link
+                        to="/contact"
+                        data-testid="overview-contact-link"
+                        className="btn-primary w-full text-center text-sm inline-flex items-center justify-center gap-2"
+                    >
+                        Send a Direct Message
+                        <ArrowRight className="w-4 h-4" aria-hidden="true"/>
+                    </Link>
+                </div>
             </section>
         </div>
     );
